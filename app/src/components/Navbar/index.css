@@ -1,0 +1,16 @@
+.nav-link-button {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: .2rem;
+  padding: .5rem;
+  transition: background-color .1s;
+}
+
+.nav-link-button:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+.user-display {
+  margin-right: 1rem;
+}
