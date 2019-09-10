@@ -29,7 +29,7 @@ export default class EmailPasswordSignUp extends React.Component {
         this.setState({ loading: false, redirectNow: true }),
         1000
       ))
-      .catch(error => this.setState({ error: error.message }))
+      .catch(error => this.setState({ error: error.message, loading: false }))
   }
 
   handleChange = event => {
