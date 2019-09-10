@@ -10,33 +10,36 @@ import AuthContext from './contexts/AuthContext'
 class ContextInjector extends React.Component {
   constructor(props) {
     super(props)
+    // init firebase
     const firebase = new ConfiguredFirebase()
 
-    // update the user state when firebase changes
+    // watch the user state,
+    // update the local user state when firebase changes its user state
     firebase.auth.onAuthStateChanged(u => {
       this.setState({
-        user: {
+        auth: {
           loggedIn: u ? true : false,
           data: { ...u }
         }
       })
     })
-
+    // INITIAL STATE
     this.state = {
       firebase,
-      user: {
+      auth: {
         loggedIn: null,
         data: {}
       }
     }
   }
 
+  // Wrap children with these contexts
   render() {
-    const { user, firebase } = this.state
+    const { auth, firebase } = this.state
     return (
-      // provide firebase for all children 🔥
+      // provide firebase and auth for all children 🔥
       <FirebaseContext.Provider value={firebase}>
-        <AuthContext.Provider value={user}>
+        <AuthContext.Provider value={auth}>
           {this.props.children}
         </AuthContext.Provider>
       </FirebaseContext.Provider>
