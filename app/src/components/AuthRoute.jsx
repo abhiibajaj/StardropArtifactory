@@ -1,9 +1,20 @@
 import React from 'react'
-import AuthContext from '../contexts/AuthContext'
+import withAuth from '../contexts/withAuth'
 import { Route, Redirect } from 'react-router-dom'
 import Loading from './Loading'
 
-export default class AuthRoute extends React.Component {
+class AuthRoute extends React.Component {
+  routeRenderHandler = () => {
+    const auth = this.props.auth
+    const Component = this.props.component
+    return (
+      (auth.loggedIn === true)
+        ? <Component />
+        : (auth.loggedIn === false)
+          ? <Redirect to='/signin' />
+          : <Loading />
+    )
+  }
   render() {
     // if the user is authenticated
     // go ahead and render the component
@@ -11,20 +22,9 @@ export default class AuthRoute extends React.Component {
     const exact = this.props.exact ? true : false
     const path = this.props.path
     return (
-      <AuthContext.Consumer>{
-        user => (
-          <Route exact={exact} path={path} render={
-            () => (
-              (user.loggedIn === true)
-                ? this.props.children
-                : (user.loggedIn === false)
-                  ? <Redirect to='/signin' />
-                  : <Loading />
-            )
-          } />
-        )
-      }
-      </AuthContext.Consumer>
+      <Route exact={exact} path={path} render={this.routeRenderHandler} />
     )
   }
 }
+
+export default withAuth(AuthRoute)

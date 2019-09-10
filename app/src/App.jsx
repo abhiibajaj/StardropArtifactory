@@ -15,9 +15,7 @@ function App() {
         <Route path="/" exact component={LandingPage} />
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
-        <AuthRoute path='/home'>
-          <HomePage />
-        </AuthRoute>
+        <AuthRoute path='/home' component={HomePage} />
       </Router>
     </div>
   )
