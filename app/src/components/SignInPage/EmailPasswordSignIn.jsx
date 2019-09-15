@@ -23,13 +23,13 @@ export default class EmailPasswordSignUp extends React.Component {
     // sign user in
     this.props.firebase
       .auth
-      .createUserWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password)
       .then(() => setTimeout(() =>
         // gotta use a timeout because firebase is still loading 🤔
         this.setState({ loading: false, redirectNow: true }),
         1000
       ))
-      .catch(error => this.setState({ error: error.message, loading: false }))
+      .catch(error => this.setState({ error: error.message }))
   }
 
   handleChange = event => {

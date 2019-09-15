@@ -1,9 +1,9 @@
 import React from 'react'
-import FirebaseContext from '../../contexts/FirebaseContext'
+import withFirebase from '../../contexts/withFirebase'
 import EmailPasswordSignUp from './EmailPasswordSignUp'
 import { Container, Col, Row } from 'react-bootstrap'
 
-export default class LoginPage extends React.Component {
+class LoginPage extends React.Component {
   render() {
     return (
       <Container fluid={true}>
@@ -14,14 +14,12 @@ export default class LoginPage extends React.Component {
         </Row>
         <Row>
           <Col>
-            <FirebaseContext.Consumer>
-              {
-                firebase => <EmailPasswordSignUp firebase={firebase} />
-              }
-            </FirebaseContext.Consumer>
+            <EmailPasswordSignUp firebase={this.props.firebase} />
           </Col>
         </Row>
       </Container>
     )
   }
 }
+
+export default withFirebase(LoginPage)

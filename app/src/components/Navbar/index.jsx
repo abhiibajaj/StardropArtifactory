@@ -1,56 +1,48 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import AuthContext from '../../contexts/AuthContext'
-import FirebaseContext from '../../contexts/FirebaseContext'
+import withAuth from '../../contexts/withAuth'
+import withFirebase from '../../contexts/withFirebase'
 import { Navbar, Nav } from 'react-bootstrap'
 import Logout from './Logout'
 import './index.css'
 
-const NavLinks = () => (
-  <AuthContext.Consumer>
+const NavLinks = ({ auth, firebase }) => (
+  <div>
     {
-      user => (
-        <FirebaseContext.Consumer>
-          {
-            firebase => (
-              user.loggedIn
-                ? (
-                  <Nav className="justify-content-end">
-                    <Navbar.Text>
-                      <span className="user-display">
-                        {
-                          user.loggedIn
-                            ? user.data.email
-                            : ''
-                        }
-                      </span>
-                    </Navbar.Text>
-                    <Logout firebase={firebase} />
-                  </Nav>
-                )
-                : (
-                  <Nav className="justify-content-end">
-                    <Nav.Item>
-                      <Link to='/signin'>
-                        <span className="nav-link-button">Sign In</span>
-                      </Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Link to='/signup'>
-                        <span className="nav-link-button">Sign Up</span>
-                      </Link>
-                    </Nav.Item>
-                  </Nav>
-                )
-            )
-          }
-        </FirebaseContext.Consumer>
-      )
+      auth.loggedIn
+        ? (
+          <Nav className="justify-content-end">
+            <Navbar.Text>
+              <span className="user-display">
+                {
+                  auth.loggedIn
+                    ? auth.data.email
+                    : ''
+                }
+              </span>
+            </Navbar.Text>
+            <Logout firebase={firebase} />
+          </Nav>
+        )
+        : (
+          <Nav className="justify-content-end">
+            <Nav.Item>
+              <Link to='/signin'>
+                <span className="nav-link-button">Sign In</span>
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to='/signup'>
+                <span className="nav-link-button">Sign Up</span>
+              </Link>
+            </Nav.Item>
+          </Nav>
+        )
     }
-  </AuthContext.Consumer>
+  </div>
 )
 
-const TopNavbar = () => (
+const TopNavbar = ({ auth, firebase }) => (
   <Navbar collapseOnSelect expand="lg" bg="light">
     <Navbar.Brand>
       <Link to='/home'>
@@ -59,9 +51,9 @@ const TopNavbar = () => (
     </Navbar.Brand>
     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
     <Navbar.Collapse className="justify-content-end">
-      <NavLinks />
+      <NavLinks auth={auth} firebase={firebase} />
     </Navbar.Collapse>
   </Navbar>
 )
 
-export default TopNavbar
+export default withAuth(withFirebase(TopNavbar))
