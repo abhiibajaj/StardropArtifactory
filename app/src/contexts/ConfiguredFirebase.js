@@ -25,6 +25,7 @@ export default class Firebase {
     this.collections = {
       items: 'items',
       users: 'users',
+      artifacts: 'artifacts',
     }
   }
 }

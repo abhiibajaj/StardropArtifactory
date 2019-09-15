@@ -33,8 +33,9 @@ class DisplayImageOnDate extends React.Component {
     }
     
     getArtifact = () => {
-        this.setState({artifact: this.props.db.collection("artifacts").doc("L5AkgsaL78dE5OCylA5y")});
-        this.artifact.get().then(function(doc) {
+        var artifact = this.props.firebase.db.collection("artifacts").doc("L5AkgsaL78dE5OCylA5y");
+        // this.setState({artifact: this.props.firebase.db.collection("artifacts").doc("L5AkgsaL78dE5OCylA5y")});
+        artifact.get().then(function(doc) {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
             } else {
