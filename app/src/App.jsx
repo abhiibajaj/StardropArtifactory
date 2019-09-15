@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage'
 import SignInPage from './components/SignInPage'
 import SignUpPage from './components/SignUpPage'
 import Navbar from './components/Navbar'
+import ArtifactOfTheDay from './components/ArtifactOfTheDayPage'
 import AuthRoute from './components/AuthRoute'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
         <AuthRoute path='/home' component={HomePage} />
+        <AuthRoute path='/artifact_of_the_day' component={ArtifactOfTheDay} />
       </Router>
     </div>
   )
