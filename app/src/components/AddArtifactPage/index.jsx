@@ -12,11 +12,28 @@ class AddArtifactPage extends React.Component {
     }
 
     handleUpload = e => {
-        const image = this.state;
+        const { image } = this.state;
         const firebase = this.props.firebase;
         const uploadTask = firebase.storage
             .ref(`images/${image.name}`)
             .put(image);
+
+        uploadTask.on(
+            "state_changed",
+            snapshot => {},
+            error => {
+                console.log(error);
+            },
+            () => {
+                firebase.storage
+                    .ref("images")
+                    .child(image.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log(url);
+                    });
+            }
+        );
     };
 
     handleChange = e => {
