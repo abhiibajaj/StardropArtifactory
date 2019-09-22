@@ -1,6 +1,7 @@
 import React from "react";
 import withFirebase from "../../contexts/withFirebase";
 import Button from "react-bootstrap/Button";
+import { Redirect } from "react-router-dom";
 
 const getCurrentDate = () => {
     const date = new Date();
@@ -11,9 +12,20 @@ class AddArtifactPage extends React.Component {
         super(props);
         this.state = {
             image: null,
-            url: ""
+            url: "",
+            redirect: false
         };
     }
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        });
+    };
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to="/home" />;
+        }
+    };
 
     handleUpload = e => {
         const { image } = this.state;
@@ -43,6 +55,8 @@ class AddArtifactPage extends React.Component {
                                 "gs://stardrop-e5f01.appspot.com/images/" +
                                 image.name
                         });
+                        this.setRedirect();
+                        console.log(this.state);
                     });
             }
         );
@@ -59,6 +73,7 @@ class AddArtifactPage extends React.Component {
     render() {
         return (
             <div>
+                {this.renderRedirect()}
                 <input type="file" onChange={this.handleChange}></input>
                 <Button onClick={this.handleUpload} variant="primary">
                     Image upload
