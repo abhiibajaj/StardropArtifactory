@@ -1,6 +1,6 @@
 import React from 'react'
-import FirebaseContext from '../../contexts/FirebaseContext';
 import withFirebase from '../../contexts/withFirebase'
+import Card from 'react-bootstrap/Card'
 
 const getCurrentDate = () => {
     const date = new Date();
@@ -14,6 +14,7 @@ class ArtifactOfTheDay extends React.Component {
         this.state = {
             date: getCurrentDate(),
             hasImage: false,
+            imageUrl: "",
             data: {},
         }
     }
@@ -31,24 +32,42 @@ class ArtifactOfTheDay extends React.Component {
         .limit(1)
         console.log(today)
         console.log(tomorrow)
+        let imageRefUrl = ""
         try {
             const querySnapshot = await artifacts.get()
             querySnapshot.forEach((doc) => {
-                this.setState({ data : doc.data()})
                 console.log(doc.data())
+                imageRefUrl = doc.data().image
+                console.log(imageRefUrl)
+                this.setState({ data : doc.data()})
             })
 
         } catch (e) {
             console.log("Error getting document:", e);
         }
+
+        //get url of image
+        let imageRef = this.props.firebase.storage.refFromURL(imageRefUrl)
+        imageRef.getDownloadURL().then((url) => {
+            this.setState({ imageUrl : url})
+          }).catch(function(error) {
+            console.log("Error getting image download url", error)
+          });
     }
     render() {
         return (
             <div>
                 <div> Today is {this.state.date.toDateString()} </div>
-                Inside firebase
-                <div> Artifact: {JSON.stringify(this.state.data)} </div>
-                <img key = "test" src={require('./test.png')} alt="" />
+                <Card style={{ width: '18rem' }}>
+                    <Card.Img variant="top" src={this.state.imageUrl} alt={require('./test.png')} />
+                    <Card.Body>
+                        <Card.Title>{this.state.data.description}</Card.Title>
+                        <Card.Text>
+                            Created by {this.state.data.ownerId} <br />
+                            Related to {this.state.data.relatedFamilyMembers}
+                        </Card.Text>
+                </Card.Body>
+                </Card>
             </div>
         )
     }
