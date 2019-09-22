@@ -2,6 +2,10 @@ import React from "react";
 import withFirebase from "../../contexts/withFirebase";
 import Button from "react-bootstrap/Button";
 
+const getCurrentDate = () => {
+    const date = new Date();
+    return date;
+};
 class AddArtifactPage extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +22,8 @@ class AddArtifactPage extends React.Component {
             .ref(`images/${image.name}`)
             .put(image);
 
+        const db = firebase.db;
+
         uploadTask.on(
             "state_changed",
             snapshot => {},
@@ -30,7 +36,11 @@ class AddArtifactPage extends React.Component {
                     .child(image.name)
                     .getDownloadURL()
                     .then(url => {
-                        console.log(url);
+                        db.collection("artifacts").add({
+                            date: getCurrentDate(),
+                            description: "???",
+                            image: url
+                        });
                     });
             }
         );
