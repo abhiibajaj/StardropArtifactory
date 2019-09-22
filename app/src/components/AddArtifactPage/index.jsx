@@ -11,6 +11,14 @@ class AddArtifactPage extends React.Component {
         };
     }
 
+    handleUpload = e => {
+        const image = this.state;
+        const firebase = this.props.firebase;
+        const uploadTask = firebase.storage
+            .ref(`images/${image.name}`)
+            .put(image);
+    };
+
     handleChange = e => {
         if (e.target.files[0]) {
             const image = e.target.files[0];
@@ -23,7 +31,9 @@ class AddArtifactPage extends React.Component {
         return (
             <div>
                 <input type="file" onChange={this.handleChange}></input>
-                <Button variant="primary">Image upload</Button>
+                <Button onClick={this.handleUpload} variant="primary">
+                    Image upload
+                </Button>
             </div>
         );
     }
