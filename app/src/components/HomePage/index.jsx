@@ -11,8 +11,25 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         this.getAllArtifacts();
+        this.getImageUrl();
     }
 
+    getImageUrl = async imageRefUrl => {
+        try {
+            const imageRef = this.props.firebase.storage.refFromURL(
+                imageRefUrl
+            );
+            const imageUrl = await imageRef.getDownloadURL();
+            this.setState(state => {
+                const images = state.images.concat(imageUrl);
+                return {
+                    images
+                };
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
     getAllArtifacts = async () => {
         const db = this.props.firebase.db;
         const artifacts = db.collection("artifacts");
@@ -26,31 +43,30 @@ class HomePage extends React.Component {
         } catch (e) {
             console.log("Error getting document:", e);
         }
-        console.log(allImageUrls);
-
         allImageUrls.forEach(imageRefUrl => {
-            const imageRef = this.props.firebase.storage.refFromURL(
-                imageRefUrl
-            );
-            imageRef
-                .getDownloadURL()
-                .then(url => {
-                    this.setState(state => {
-                        const images = state.images.concat(url);
-                        return {
-                            images
-                        };
-                    });
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            this.getImageUrl(imageRefUrl);
         });
-        console.log(this.state);
     };
 
     render() {
-        return <button onClick={this.getAllArtifacts}>Hello Auth Page</button>;
+        return (
+            <div>
+                {[...this.state.images].map((image, index) => {
+                    console.log(image);
+                    console.log(index);
+                    return (
+                        <img
+                            key={index}
+                            height="250"
+                            width="250"
+                            alt=""
+                            src={image}
+                        ></img>
+                    );
+                })}
+            </div>
+        );
+        //return <button onClick={this.getAllArtifacts}>Hello Auth Page</button>;
     }
 }
 
