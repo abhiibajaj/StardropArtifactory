@@ -27,6 +27,26 @@ class AddArtifactPage extends React.Component {
         }
     };
 
+    renderButton = () => {
+        if (this.state.image) {
+            return (
+                <Button onClick={this.handleUpload} variant="primary">
+                    Image upload
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    onClick={this.handleUpload}
+                    variant="secondary"
+                    disabled
+                >
+                    Image upload
+                </Button>
+            );
+        }
+    };
+
     handleUpload = e => {
         const { image } = this.state;
         const firebase = this.props.firebase;
@@ -75,9 +95,7 @@ class AddArtifactPage extends React.Component {
             <div>
                 {this.renderRedirect()}
                 <input type="file" onChange={this.handleChange}></input>
-                <Button onClick={this.handleUpload} variant="primary">
-                    Image upload
-                </Button>
+                {this.renderButton()}
             </div>
         );
     }
