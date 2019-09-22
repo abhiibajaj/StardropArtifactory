@@ -16,25 +16,16 @@ class HomePage extends React.Component {
     getAllArtifacts = async () => {
         const db = this.props.firebase.db;
         const artifacts = db.collection("artifacts");
-
-        artifacts
-            .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    this.setState({
-                        allImages: [
-                            {
-                                url: doc.data().description
-                            },
-                            ...this.state.allImages
-                        ]
-                    });
-                });
-            })
-            .catch(error => {
-                console.log(error);
+        const allImageUrls = [];
+        try {
+            const querySnapshot = await artifacts.get();
+            querySnapshot.forEach(doc => {
+                allImageUrls.push(doc.data().image);
             });
-        console.log(this.state);
+        } catch (e) {
+            console.log("Error getting document:", e);
+        }
+        console.log(allImageUrls);
     };
 
     render() {
