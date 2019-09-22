@@ -9,7 +9,11 @@ class HomePage extends React.Component {
         };
     }
 
-    getAllArtifacts = e => {
+    componentDidMount() {
+        this.getAllArtifacts();
+    }
+
+    getAllArtifacts = async () => {
         const db = this.props.firebase.db;
         const artifacts = db.collection("artifacts");
 
@@ -21,7 +25,8 @@ class HomePage extends React.Component {
                         allImages: [
                             {
                                 url: doc.data().description
-                            }
+                            },
+                            ...this.state.allImages
                         ]
                     });
                 });
@@ -29,6 +34,7 @@ class HomePage extends React.Component {
             .catch(error => {
                 console.log(error);
             });
+        console.log(this.state);
     };
 
     render() {
