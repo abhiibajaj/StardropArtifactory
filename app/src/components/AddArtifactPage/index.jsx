@@ -39,7 +39,8 @@ class AddArtifactPage extends React.Component {
                         db.collection("artifacts").add({
                             date: getCurrentDate(),
                             description: "???",
-                            image: url
+                            image:
+                                "gs://stardrop-e5f01.appspot.com/" + image.name
                         });
                     });
             }
