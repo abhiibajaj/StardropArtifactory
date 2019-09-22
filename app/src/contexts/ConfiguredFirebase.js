@@ -20,7 +20,7 @@ export default class Firebase {
 
     this.auth = app.auth()
     this.db = app.firestore()
-    this.storage = app.storage() // <- need this
+    this.storage = app.storage()
     this.providers = {
       //google: new app.auth.GoogleAuthProvider()
     }
