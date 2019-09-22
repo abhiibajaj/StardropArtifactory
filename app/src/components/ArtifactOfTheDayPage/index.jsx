@@ -1,61 +1,57 @@
 import React from 'react'
 import FirebaseContext from '../../contexts/FirebaseContext';
+import withFirebase from '../../contexts/withFirebase'
 
 const getCurrentDate = () => {
     const date = new Date();
-    return date.toDateString();
+    date.setHours(0,0,0,0);
+    return date;
 }
 
 class ArtifactOfTheDay extends React.Component {
-  render() {
-    return (
-    <div>
-        <div> Today is {getCurrentDate()} </div>
-        <FirebaseContext.Consumer>
-            {
-              firebase => <DisplayImageOnDate firebase={firebase} />
-            }
-        </FirebaseContext.Consumer>
-    </div>
-
-    )
-  }
-}
-
-class DisplayImageOnDate extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            date: '',
+            date: getCurrentDate(),
             hasImage: false,
-            artifact: null,
+            data: {},
         }
     }
     
-    getArtifact = () => {
-        var artifact = this.props.firebase.db.collection("artifacts").doc("L5AkgsaL78dE5OCylA5y");
-        // this.setState({artifact: this.props.firebase.db.collection("artifacts").doc("L5AkgsaL78dE5OCylA5y")});
-        artifact.get().then(function(doc) {
-            if (doc.exists) {
-                console.log("Document data:", doc.data());
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
+    componentDidMount() {
+        this.getArtifact()
     }
 
+    getArtifact = async () => {
+        const today = this.state.date
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000)
+        let artifacts = this.props.firebase.db.collection('artifacts')
+        .where('date', '>=', today)
+        .where('date', '<', tomorrow)
+        .limit(1)
+        console.log(today)
+        console.log(tomorrow)
+        try {
+            const querySnapshot = await artifacts.get()
+            querySnapshot.forEach((doc) => {
+                this.setState({ data : doc.data()})
+                console.log(doc.data())
+            })
+
+        } catch (e) {
+            console.log("Error getting document:", e);
+        }
+    }
     render() {
         return (
             <div>
+                <div> Today is {this.state.date.toDateString()} </div>
                 Inside firebase
-                {this.getArtifact()}
-                <img src={require('./test.png')} />
+                <div> Artifact: {JSON.stringify(this.state.data)} </div>
+                <img key = "test" src={require('./test.png')} alt="" />
             </div>
         )
     }
 }
 
-export default ArtifactOfTheDay;
+export default withFirebase(ArtifactOfTheDay);
