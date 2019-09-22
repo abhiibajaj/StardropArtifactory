@@ -4,7 +4,6 @@ import Card from 'react-bootstrap/Card'
 
 const getCurrentDate = () => {
     const date = new Date();
-    date.setHours(0,0,0,0);
     return date;
 }
 
@@ -24,14 +23,16 @@ class ArtifactOfTheDay extends React.Component {
     }
 
     getArtifact = async () => {
-        const today = this.state.date
-        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000)
+        const month = this.state.date.getMonth() + 1 // getMonth returns month 0indexed
+        const day = this.state.date.getDate()
+
+        console.log(month)
+        console.log(day)
         let artifacts = this.props.firebase.db.collection('artifacts')
-        .where('date', '>=', today)
-        .where('date', '<', tomorrow)
+        .where('month', '==', month)
+        .where('day', '==', day)
         .limit(1)
-        console.log(today)
-        console.log(tomorrow)
+
         let imageRefUrl = ""
         try {
             const querySnapshot = await artifacts.get()
