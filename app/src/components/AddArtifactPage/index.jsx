@@ -40,7 +40,8 @@ class AddArtifactPage extends React.Component {
                             date: getCurrentDate(),
                             description: "???",
                             image:
-                                "gs://stardrop-e5f01.appspot.com/" + image.name
+                                "gs://stardrop-e5f01.appspot.com/images/" +
+                                image.name
                         });
                     });
             }
