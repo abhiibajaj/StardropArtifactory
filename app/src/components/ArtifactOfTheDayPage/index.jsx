@@ -42,18 +42,16 @@ class ArtifactOfTheDay extends React.Component {
                 console.log(imageRefUrl)
                 this.setState({ data : doc.data()})
             })
+  
+            //get url of image
+            let imageRef = this.props.firebase.storage.refFromURL(imageRefUrl)
+            const url = await imageRef.getDownloadURL()
+            this.setState({ imageUrl : url})
 
         } catch (e) {
             console.log("Error getting document:", e);
         }
 
-        //get url of image
-        let imageRef = this.props.firebase.storage.refFromURL(imageRefUrl)
-        imageRef.getDownloadURL().then((url) => {
-            this.setState({ imageUrl : url})
-          }).catch(function(error) {
-            console.log("Error getting image download url", error)
-          });
     }
     render() {
         return (
