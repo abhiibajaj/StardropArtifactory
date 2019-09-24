@@ -4,10 +4,13 @@ import withFirebase from '../../contexts/withFirebase'
 import Item from './Item'
 
 function SearchResults({ results, firebase }) {
-  console.log(firebase)
   return (
     <div className={styles.container}>
-      {results.map(data => <Item key={data.objectID} data={data} storage={firebase.storage} />)}
+      {
+        results.map(data => (
+          <Item key={data.objectID} data={data} storage={firebase.storage} />
+        ))
+      }
     </div>
   )
 }
