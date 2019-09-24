@@ -30,7 +30,7 @@ exports.onArtifactUpdated = functions.firestore
     // Add an 'objectID' field which Algolia requires
     artifact.objectID = context.params.artifactId
     // Write to the algolia index, updating it
-    return client.initIndex(ALGOLIA_INDEX_NAME).saveObject(recipe)
+    return client.initIndex(ALGOLIA_INDEX_NAME).saveObject(artifact)
   })
 
 /* Delete Artifacts from Algolia */
