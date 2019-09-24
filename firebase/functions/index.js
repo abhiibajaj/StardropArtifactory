@@ -6,6 +6,7 @@ const algoliasearch = require('algoliasearch')
 const env = require('./env.json')
 const ALGOLIA_ADMIN_KEY = env.ALGOLIA_ADMIN_KEY
 const ALGOLIA_ID = env.ALGOLIA_ID
+const ALGOLIA_INDEX_NAME = env.ALGOLIA_INDEX_NAME
 
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
 
