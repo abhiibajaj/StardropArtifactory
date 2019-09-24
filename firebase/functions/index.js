@@ -1,5 +1,7 @@
 const functions = require('firebase-functions')
+const admin = require('firebase-admin')
 const algoliasearch = require('algoliasearch')
+admin.initializeApp()
 
 // load in env
 // get API Keys from https://www.algolia.com/apps/80R55RX4B0/api-keys/all
