@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import styles from './Item.module.css'
-import RippleLoader from '../RippleLoader'
+import RippleLoader from '../../RippleLoader'
 
 export default function Item({ data = {}, storage }) {
   const [image, setImage] = useState('')
 
-  storage
-    .refFromURL(data.image)
-    .getDownloadURL()
-    .then(url => setImage(url))
+  useEffect(() => {
+    storage
+      .refFromURL(data.image)
+      .getDownloadURL()
+      .then(url => setImage(url))
+  }, [data, image, storage])
 
   return (
     <Card className={styles.card}>

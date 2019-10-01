@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.css'
-import withFirebase from '../../contexts/withFirebase'
+import withFirebase from '../../../contexts/withFirebase'
 import Item from './Item'
 
 function SearchResults({ results, firebase }) {
