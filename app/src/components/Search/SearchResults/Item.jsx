@@ -14,15 +14,19 @@ export default function Item({ data = {}, storage }) {
   }, [data, image, storage])
 
   return (
-    <Card className={styles.card}>
-      {
-        image === ''
-          ? <RippleLoader />
-          : <Card.Img variant="top" src={image} />
-      }
-      <Card.Body>
-        <Card.Text>{data.description}</Card.Text>
-      </Card.Body>
-    </Card>
+    <div className={styles.container}>
+      <Card className={styles.card}>
+        <div style={{ height: '300px' }}>
+          {
+            image === ''
+              ? <RippleLoader />
+              : <Card.Img variant="top" src={image} />
+          }
+        </div>
+        <Card.Body>
+          <Card.Text>{data.description}</Card.Text>
+        </Card.Body>
+      </Card>
+    </div>
   )
 }

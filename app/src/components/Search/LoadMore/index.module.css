@@ -1,9 +1,10 @@
-.card {
-  width: 320px;
-}
-
 .container {
   display: grid;
   justify-items: center;
   align-items: center;
+}
+
+.button {
+  height: 300px;
+  width: 300px;
 }
