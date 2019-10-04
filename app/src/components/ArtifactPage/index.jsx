@@ -3,6 +3,7 @@ import withFirebase from '../../contexts/withFirebase'
 import Card from 'react-bootstrap/Card'
 import RightArrow from './RightArrow'
 import LeftArrow from './LeftArrow'
+import Spinner from './Spinner'
 
 class ArtifactPage extends React.Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class ArtifactPage extends React.Component {
         this.state = {
             artifactId: this.props.match.params.artifactId,
             data: {},
+            isLoading: true,
             artifactExists: false,
             images: [],
             imageIndex: 0,
@@ -28,9 +30,10 @@ class ArtifactPage extends React.Component {
         try {
             const artifactDoc = await artifact.get()
             if (!artifactDoc.exists) {
+                this.setState( {isLoading: false} )
                 return
             }
-            this.setState({artifactExists: true})
+            this.setState( {artifactExists: true} )
             console.log(artifactDoc.data())
             imageRefUrls = artifactDoc.data().image
             console.log(imageRefUrls)
@@ -41,7 +44,7 @@ class ArtifactPage extends React.Component {
                 const url = await imageRef.getDownloadURL()
                 let images = this.state.images
                 images.push(url)
-                this.setState( {images: images} )
+                this.setState( {images: images, isLoading: false} )
             })
 
         } catch (e) {
@@ -61,31 +64,34 @@ class ArtifactPage extends React.Component {
           return this.setState( {imageIndex: 0} )
         }
         this.setState({imageIndex: this.state.imageIndex + 1 })
-      }
-
-    slideWidth = () => {
-        return document.querySelector('.slide').clientWidth
-     }
+    }
     
+    buildSlide = () => {
+        return <div className="slider" style={{display: 'flex'}}>
+                <LeftArrow goToPrevSlide={this.goToPrevSlide} />
+                <div className="slide">
+                    <Card style={{ width: '18rem' }}>
+                        <Card.Img variant="top" src={this.state.images[this.state.imageIndex]} alt="missing" />
+                        <Card.Body>
+                            <Card.Title>{this.state.data.description}</Card.Title>
+                            <Card.Text>
+                                Created by {this.state.data.ownerId} <br />
+                                Related to {this.state.data.relatedFamilyMembers}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </div>
+                <RightArrow goToNextSlide={this.goToNextSlide} />
+              </div>
+    }
+
     render() {
+
         return (
             <div>
-                <div className="slider" style={{display: 'flex'}}>
-                    <LeftArrow goToPrevSlide={this.goToPrevSlide} />
-                    <div className="slide">
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={this.state.images[this.state.imageIndex]} alt="missing" />
-                            <Card.Body>
-                                <Card.Title>{this.state.data.description}</Card.Title>
-                                <Card.Text>
-                                    Created by {this.state.data.ownerId} <br />
-                                    Related to {this.state.data.relatedFamilyMembers}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </div>
-                    <RightArrow goToNextSlide={this.goToNextSlide} />
-                </div>
+                {this.state.isLoading && <Spinner />}
+                {this.state.artifactExists && !this.state.isLoading && this.buildSlide()}
+                {!this.state.artifactExists && !this.state.isLoading && <div>The artifact does not exsit. </div>}
             </div>
         )
     }
