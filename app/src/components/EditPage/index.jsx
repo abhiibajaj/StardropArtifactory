@@ -1,12 +1,7 @@
 import React from 'react'
 import withFirebase from '../../contexts/withFirebase'
-import Card from 'react-bootstrap/Card'
-import RightArrow from './RightArrow'
-import LeftArrow from './LeftArrow'
-import Spinner from './Spinner'
-import EditIcon from './EditIcon'
 
-class ArtifactPage extends React.Component {
+class EditPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -69,21 +64,7 @@ class ArtifactPage extends React.Component {
 
     buildSlide = () => {
         return <div className="slider" style={{display: 'flex'}}>
-                <LeftArrow goToPrevSlide={this.goToPrevSlide} />
-                <div className="slide">
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={this.state.images[this.state.imageIndex]} alt="missing" />
-                        <Card.Body>
-                            <Card.Title>{this.state.data.description}</Card.Title>
-                            <Card.Text>
-                                Created by {this.state.data.ownerId} <br />
-                                Related to {this.state.data.relatedFamilyMembers}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-                <RightArrow goToNextSlide={this.goToNextSlide} />
-                <EditIcon artifactId={this.state.artifactId}/>
+                {this.state.data}
               </div>
     }
 
@@ -91,7 +72,8 @@ class ArtifactPage extends React.Component {
 
         return (
             <div>
-                {this.state.isLoading && <Spinner />}
+                Edting {this.state.artifactId}
+                {this.state.isLoading && <div>Loading...</div>}
                 {this.state.artifactExists && !this.state.isLoading && this.buildSlide()}
                 {!this.state.artifactExists && !this.state.isLoading && <div>The artifact does not exsit. </div>}
             </div>
@@ -99,4 +81,4 @@ class ArtifactPage extends React.Component {
     }
 }
 
-export default withFirebase(ArtifactPage);
+export default withFirebase(EditPage)

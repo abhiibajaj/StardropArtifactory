@@ -8,6 +8,7 @@ import SignUpPage from './components/SignUpPage'
 import Navbar from './components/Navbar'
 import AuthRoute from './components/AuthRoute'
 import ArtifactPage from './components/ArtifactPage'
+import EditPage from './components/EditPage'
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
         <AuthRoute path='/home' component={HomePage} />
-        <AuthRoute path="/artifact/:artifactId" component={ArtifactPage} />
+        <AuthRoute path="/artifact/:artifactId" exact component={ArtifactPage} />
+        <AuthRoute path="/artifact/edit/:artifactId" exact component={EditPage} />
       </Router>
     </div>
   )
