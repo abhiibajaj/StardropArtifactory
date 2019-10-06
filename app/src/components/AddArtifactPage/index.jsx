@@ -28,7 +28,7 @@ class AddArtifactPage extends React.Component {
     };
 
     renderButton = () => {
-        if (this.state.images) {
+        if (this.state.images.length > 0) {
             return (
                 <Button onClick={this.handleUpload} variant="primary">
                     Image upload
@@ -78,38 +78,8 @@ class AddArtifactPage extends React.Component {
                 });
 
         });
-        // this.setRedirect();
-
-
-        // const uploadTask = firebase.storage
-        //     .ref(`images/${image.name}`)
-        //     .put(image);
-
-
-        // uploadTask.on(
-        //     "state_changed",
-        //     snapshot => {},
-        //     error => {
-        //         console.log(error);
-        //     },
-        //     () => {
-        //         firebase.storage
-        //             .ref("images")
-        //             .child(image.name)
-        //             .getDownloadURL()
-        //             .then(url => {
-        //                 db.collection("artifacts").add({
-        //                     date: getCurrentDate(),
-        //                     description: "???",
-        //                     image:
-        //                         "gs://stardrop-e5f01.appspot.com/images/" +
-        //                         image.name
-        //                 });
-        //                 this.setRedirect();
-        //                 console.log(this.state);
-        //             });
-        //     }
-        // );
+        this.setRedirect();
+        console.log(this.state);
     };
 
     handleChange = e => {
