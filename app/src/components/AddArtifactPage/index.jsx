@@ -1,7 +1,12 @@
 import React from "react";
 import withFirebase from "../../contexts/withFirebase";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form"
+import Col from "react-bootstrap/Col"
 import { Redirect } from "react-router-dom";
+import Calendar from "../Calendar";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const getCurrentDate = () => {
     const date = new Date();
@@ -31,7 +36,7 @@ class AddArtifactPage extends React.Component {
         if (this.state.images.length > 0) {
             return (
                 <Button onClick={this.handleUpload} variant="primary">
-                    Image upload
+                    Upload
                 </Button>
             );
         } else {
@@ -41,7 +46,7 @@ class AddArtifactPage extends React.Component {
                     variant="secondary"
                     disabled
                 >
-                    Image upload
+                    Upload
                 </Button>
             );
         }
@@ -93,12 +98,29 @@ class AddArtifactPage extends React.Component {
     
     render() {
         return (
-    
-            <div>
+            <Form>
                 {this.renderRedirect()}
-                <input type="file" multiple onChange={this.handleChange}></input>
-                {this.renderButton()}
-            </div>
+
+                <Form.Row>
+                    <Col sm={3}><h6>Upload your Artifacts:</h6></Col>
+                    <Col>
+                        <Form.Control type="file" multiple onChange={this.handleChange}/>
+                    </Col>
+                </Form.Row>
+                <Form.Row>
+                    <Col sm={3}><h6>Descripton:</h6></Col>
+                    <Col>
+                        <Form.Control as="textarea"></Form.Control>
+                    </Col>
+                </Form.Row>
+                <Form.Row>
+                    <Col>Date of use</Col>
+                    <Col><Calendar></Calendar></Col>
+                </Form.Row>
+                <Form.Group>
+                    {this.renderButton()}
+                </Form.Group>
+            </Form>
         );
     }
 }
