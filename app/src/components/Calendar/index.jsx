@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
  
 class Calendar extends React.Component {
   state = {
-    startDate: new Date()
+    startDate: null
   };
  
   handleChange = date => {

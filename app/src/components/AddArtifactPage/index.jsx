@@ -18,6 +18,10 @@ class AddArtifactPage extends React.Component {
         this.state = {
             images: [],
             url: "",
+            description: "",
+            createDate: null,
+            day: null,
+            month: null,
             redirect: false
         };
     }
@@ -73,7 +77,10 @@ class AddArtifactPage extends React.Component {
                     .then(url => {
                         db.collection("artifacts").add({
                             date: getCurrentDate(),
-                            description: "???",
+                            description: this.state.description,
+                            createdTime: this.state.createDate,
+                            month: this.state.month,
+                            day: this.state.day,
                             image:
                                 "gs://stardrop-e5f01.appspot.com/images/" +
                                 image.name
@@ -95,6 +102,25 @@ class AddArtifactPage extends React.Component {
             }));
         }
     };
+
+    handleForm = e => {
+        const description = this.refs.description.value;
+        const createdDate = this.refs.calendar.state.startDate;
+        console.log(createdDate);
+        this.setState({
+            description: description
+        })
+        if(createdDate){
+            
+            this.setState({
+                createDate: createdDate,
+                day: createdDate.getDate(),
+                month: createdDate.getMonth() + 1
+            })
+        }
+        console.log(this.state)
+
+    }
     
     render() {
         return (
@@ -110,12 +136,12 @@ class AddArtifactPage extends React.Component {
                 <Form.Row>
                     <Col sm={3}><h6>Descripton:</h6></Col>
                     <Col>
-                        <Form.Control as="textarea"></Form.Control>
+                        <Form.Control onChange={this.handleForm} ref="description" as="textarea"/>
                     </Col>
                 </Form.Row>
                 <Form.Row>
-                    <Col>Date of use</Col>
-                    <Col><Calendar></Calendar></Col>
+                    <Col>Date of Origin</Col>
+                    <Col><Calendar onPropertyChange={this.handleForm} ref="calendar"/></Col>
                 </Form.Row>
                 <Form.Group>
                     {this.renderButton()}
