@@ -1,5 +1,6 @@
 import React from 'react'
 import withFirebase from "../../contexts/withFirebase";
+import "./index.css"
 
 class SlideshowPage extends React.Component {
     constructor(props){
@@ -11,9 +12,13 @@ class SlideshowPage extends React.Component {
 
     render() {
         return(
-            <div>
-                <h1>Slideshow Here</h1>
-            </div>
+            <ul class="slideshow">
+                <li style={{backgroundImage: 'url("http://i.imgur.com/2LSMCmJ.jpg")'}}></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
         )
     }
 }
