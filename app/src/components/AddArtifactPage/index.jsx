@@ -11,7 +11,7 @@ class AddArtifactPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: null,
+            images: [],
             url: "",
             redirect: false
         };
@@ -28,7 +28,7 @@ class AddArtifactPage extends React.Component {
     };
 
     renderButton = () => {
-        if (this.state.image) {
+        if (this.state.images) {
             return (
                 <Button onClick={this.handleUpload} variant="primary">
                     Image upload
@@ -48,24 +48,22 @@ class AddArtifactPage extends React.Component {
     };
 
     handleUpload = e => {
-        const { image } = this.state;
+        // const { image } = this.state.images;
         const firebase = this.props.firebase;
-        const uploadTask = firebase.storage
-            .ref(`images/${image.name}`)
-            .put(image);
-
         const db = firebase.db;
-
-        uploadTask.on(
-            "state_changed",
-            snapshot => {},
-            error => {
-                console.log(error);
-            },
-            () => {
-                firebase.storage
-                    .ref("images")
-                    .child(image.name)
+        
+        Object.keys(this.state.images).map((key) => {
+            let image = this.state.images[key];
+            console.log(this.state.images)
+            console.log(key)
+            console.log(image)
+            let newRef = firebase.storage
+                .ref(`images/${image.name}`)
+                .put(image)
+                .then((snapshot)=>{
+                    let progress = snapshot.bytesTransferred / snapshot.totalBytes*100
+                    console.log('Upload is ' + progress + '% done');
+                    snapshot.ref
                     .getDownloadURL()
                     .then(url => {
                         db.collection("artifacts").add({
@@ -75,26 +73,60 @@ class AddArtifactPage extends React.Component {
                                 "gs://stardrop-e5f01.appspot.com/images/" +
                                 image.name
                         });
-                        this.setRedirect();
-                        console.log(this.state);
+                        // console.log(this.state);
                     });
-            }
-        );
+                });
+
+        });
+        // this.setRedirect();
+
+
+        // const uploadTask = firebase.storage
+        //     .ref(`images/${image.name}`)
+        //     .put(image);
+
+
+        // uploadTask.on(
+        //     "state_changed",
+        //     snapshot => {},
+        //     error => {
+        //         console.log(error);
+        //     },
+        //     () => {
+        //         firebase.storage
+        //             .ref("images")
+        //             .child(image.name)
+        //             .getDownloadURL()
+        //             .then(url => {
+        //                 db.collection("artifacts").add({
+        //                     date: getCurrentDate(),
+        //                     description: "???",
+        //                     image:
+        //                         "gs://stardrop-e5f01.appspot.com/images/" +
+        //                         image.name
+        //                 });
+        //                 this.setRedirect();
+        //                 console.log(this.state);
+        //             });
+        //     }
+        // );
     };
 
     handleChange = e => {
         if (e.target.files[0]) {
-            const image = e.target.files[0];
+            const image = e.target.files;
             this.setState(() => ({
-                image
+                images: image
             }));
         }
     };
+    
     render() {
         return (
+    
             <div>
                 {this.renderRedirect()}
-                <input type="file" onChange={this.handleChange}></input>
+                <input type="file" multiple onChange={this.handleChange}></input>
                 {this.renderButton()}
             </div>
         );
