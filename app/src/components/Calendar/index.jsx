@@ -11,6 +11,8 @@ class Calendar extends React.Component {
   handleChange = date => {
     this.setState({
       startDate: date
+    }, () => {
+      this.props.myfunc()
     });
   };
  

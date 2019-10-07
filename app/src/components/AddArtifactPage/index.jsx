@@ -141,7 +141,7 @@ class AddArtifactPage extends React.Component {
                 </Form.Row>
                 <Form.Row>
                     <Col>Date of Origin</Col>
-                    <Col><Calendar onPropertyChange={this.handleForm} ref="calendar"/></Col>
+                    <Col><Calendar myfunc={this.handleForm} ref="calendar"/></Col>
                 </Form.Row>
                 <Form.Group>
                     {this.renderButton()}
