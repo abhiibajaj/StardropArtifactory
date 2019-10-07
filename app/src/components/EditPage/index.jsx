@@ -1,5 +1,6 @@
 import React from 'react'
 import withFirebase from '../../contexts/withFirebase'
+import EditForm from './EditForm'
 
 class EditPage extends React.Component {
     constructor(props) {
@@ -48,23 +49,9 @@ class EditPage extends React.Component {
         }
     }
 
-    goToPrevSlide = () => {
-        if(this.state.imageIndex === 0) {
-            return this.setState( {imageIndex: this.state.images.length-1} )
-        }
-        this.setState({imageIndex: this.state.imageIndex - 1 })
-    }
-    
-    goToNextSlide = () => {
-        if(this.state.imageIndex === this.state.images.length - 1) {
-          return this.setState( {imageIndex: 0} )
-        }
-        this.setState({imageIndex: this.state.imageIndex + 1 })
-    }
-
-    buildSlide = () => {
+    buildEditForm = () => {
         return <div className="slider" style={{display: 'flex'}}>
-                {this.state.data}
+                <EditForm artifactData={this.state.data} artifactId={this.state.artifactId} firebase={this.props.firebase}/>
               </div>
     }
 
@@ -72,9 +59,9 @@ class EditPage extends React.Component {
 
         return (
             <div>
-                Edting {this.state.artifactId}
+                Editing {this.state.artifactId}
                 {this.state.isLoading && <div>Loading...</div>}
-                {this.state.artifactExists && !this.state.isLoading && this.buildSlide()}
+                {this.state.artifactExists && !this.state.isLoading && this.buildEditForm()}
                 {!this.state.artifactExists && !this.state.isLoading && <div>The artifact does not exsit. </div>}
             </div>
         )
