@@ -19,6 +19,7 @@ export default class Firebase {
 
     this.auth = app.auth()
     this.db = app.firestore()
+    this.fPath = app.firestore.FieldPath;
     this.providers = {
       //google: new app.auth.GoogleAuthProvider()
     }
