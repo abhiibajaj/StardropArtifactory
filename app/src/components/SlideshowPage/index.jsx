@@ -17,18 +17,49 @@ class SlideshowPage extends React.Component {
                 <div><h1>Need at least 5 images for a slideshow!</h1></div>
             )
         } else {
+            const style1 = {
+                backgroundImage: `url(${this.state.allImageUrls[0]})`
+            }
+            const style2 = {
+                backgroundImage: `url(${this.state.allImageUrls[1]})`
+            }
+            const style3 = {
+                backgroundImage: `url(${this.state.allImageUrls[2]})`
+            }
+            const style4 = {
+                backgroundImage: `url(${this.state.allImageUrls[3]})`
+            }
+            const style5 = {
+                backgroundImage: `url(${this.state.allImageUrls[4]})`
+            }
             return(
                 <ul class="slideshow">
-                    <li style={{backgroundImage: 'url("http://i.imgur.com/2LSMCmJ.jpg")'}}></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
+                    <li style={style1}></li>
+                    <li style={style2}></li>
+                    <li style={style3}></li>
+                    <li style={style4}></li>
+                    <li style={style5}></li>
                 </ul>
             )
         }
 
     }
+    getImageUrl = async imageRefUrl => {
+        try {
+            console.log(imageRefUrl)
+            const imageRef = this.props.firebase.storage.refFromURL(imageRefUrl);
+            const imageUrl = await imageRef.getDownloadURL();
+            this.setState(state => {
+                const allImageUrls = state.allImageUrls.concat(imageUrl);
+                return {
+                    allImageUrls
+                };
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        console.log(this.state)
+    };
     
     getRandomImages = async () => {
         const db = this.props.firebase.db;
@@ -55,9 +86,12 @@ class SlideshowPage extends React.Component {
             }
         }
         
-        this.setState({
-            allImageUrls: allImageUrls
-        })
+        // this.setState({
+        //     allImageUrls: allImageUrls
+        // })
+        allImageUrls.forEach(imageRefUrl => {
+            this.getImageUrl(imageRefUrl);
+        });
         console.log(this.state);
     };
 
