@@ -22,7 +22,11 @@ function App() {
         <Route path="/signup" component={SignUpPage} />
         <AuthRoute path="/home" component={HomePage} />
         <AuthRoute path="/addartifact" component={AddArtifactPage} />
-        <AuthRoute path="/artifact/:artifactId" component={ArtifactPage} />
+        <AuthRoute
+          path="/artifact/:artifactId"
+          exact
+          component={ArtifactPage}
+        />
         <AuthRoute
           path="/artifact/edit/:artifactId"
           exact

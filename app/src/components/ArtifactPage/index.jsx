@@ -21,6 +21,7 @@ class ArtifactPage extends React.Component {
   componentDidMount() {
     this.fetchArtifact()
   }
+<<<<<<< HEAD
 
   fetchArtifact = async () => {
     const artifactId = this.state.artifactId
@@ -41,6 +42,35 @@ class ArtifactPage extends React.Component {
         data: artifactDoc.data(),
         images: artifactDoc.data().image,
         isLoading: false
+=======
+
+  fetchArtifact = async () => {
+    const artifactId = this.state.artifactId
+    console.log("getting artifact with id: " + artifactId)
+    let artifact = this.props.firebase.db
+      .collection("artifacts")
+      .doc(artifactId)
+
+    let imageRefUrls = []
+    try {
+      const artifactDoc = await artifact.get()
+      if (!artifactDoc.exists) {
+        this.setState({ isLoading: false })
+        return
+      }
+      this.setState({ artifactExists: true })
+      console.log(artifactDoc.data())
+      imageRefUrls = artifactDoc.data().image
+      console.log(imageRefUrls)
+      this.setState({ data: artifactDoc.data() })
+
+      imageRefUrls.forEach(async refUrl => {
+        let imageRef = this.props.firebase.storage.refFromURL(refUrl)
+        const url = await imageRef.getDownloadURL()
+        let images = this.state.images
+        images.push(url)
+        this.setState({ images: images, isLoading: false })
+>>>>>>> clean up formatting
       })
     } catch (e) {
       console.log("Error getting document:", e)
