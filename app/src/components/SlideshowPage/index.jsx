@@ -6,13 +6,13 @@ class SlideshowPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            images: [],
+            allImageUrls: [],
             randomNumbers: []
         }
     }
 
     renderSlideshow = () => {
-        if(this.state.images.length < 5){
+        if(this.state.allImageUrls.length < 5){
             return (
                 <div><h1>Need at least 5 images for a slideshow!</h1></div>
             )
@@ -34,27 +34,31 @@ class SlideshowPage extends React.Component {
         const db = this.props.firebase.db;
         const artifacts = db.collection("artifacts");
         const allImageUrls = [];
+        for (var i=0;i<5;i++){
+            let randomNum = Math.floor(Math.random() * Math.floor(20));
 
-        try {
-            const querySnapshot = await artifacts.where('random', '>=', 19).limit(1).get();
-            if(querySnapshot.size > 0){
-                querySnapshot.forEach(doc => {
-                    allImageUrls.push(doc.data().image);
-                });
-            } else {
-                const querySnapshot = await artifacts.where('random', '<', 19).limit(1).get();
-                querySnapshot.forEach(doc => {
-                    allImageUrls.push(doc.data().image);
-                });
+            try {
+                const querySnapshot = await artifacts.where('random', '>=', randomNum).limit(1).get();
+                if(querySnapshot.size > 0){
+                    querySnapshot.forEach(doc => {
+                        allImageUrls.push(doc.data().image);
+                    });
+                } else {
+                    const querySnapshot = await artifacts.where('random', '<', randomNum).limit(1).get();
+                    querySnapshot.forEach(doc => {
+                        allImageUrls.push(doc.data().image);
+                    });
+                }
+                
+            } catch (e) {
+                console.log("Error getting document:", e);
             }
-            
-        } catch (e) {
-            console.log("Error getting document:", e);
         }
-        console.log(allImageUrls);
-        // allImageUrls.forEach(imageRefUrl => {
-        //     this.getImageUrl(imageRefUrl);
-        // });
+        
+        this.setState({
+            allImageUrls: allImageUrls
+        })
+        console.log(this.state);
     };
 
     getRandomNumbers = () => {
