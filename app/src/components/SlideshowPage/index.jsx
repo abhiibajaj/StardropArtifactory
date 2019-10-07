@@ -12,38 +12,33 @@ class SlideshowPage extends React.Component {
     }
 
     renderSlideshow = () => {
-        if(this.state.allImageUrls.length < 5){
-            return (
-                <div><h1>Need at least 5 images for a slideshow!</h1></div>
-            )
-        } else {
-            const style1 = {
-                backgroundImage: `url(${this.state.allImageUrls[0]})`
-            }
-            const style2 = {
-                backgroundImage: `url(${this.state.allImageUrls[1]})`
-            }
-            const style3 = {
-                backgroundImage: `url(${this.state.allImageUrls[2]})`
-            }
-            const style4 = {
-                backgroundImage: `url(${this.state.allImageUrls[3]})`
-            }
-            const style5 = {
-                backgroundImage: `url(${this.state.allImageUrls[4]})`
-            }
-            return(
-                <ul class="slideshow">
-                    <li style={style1}></li>
-                    <li style={style2}></li>
-                    <li style={style3}></li>
-                    <li style={style4}></li>
-                    <li style={style5}></li>
-                </ul>
-            )
+        
+        const style1 = {
+            backgroundImage: `url(${this.state.allImageUrls[0]})`
         }
-
+        const style2 = {
+            backgroundImage: `url(${this.state.allImageUrls[1]})`
+        }
+        const style3 = {
+            backgroundImage: `url(${this.state.allImageUrls[2]})`
+        }
+        const style4 = {
+            backgroundImage: `url(${this.state.allImageUrls[3]})`
+        }
+        const style5 = {
+            backgroundImage: `url(${this.state.allImageUrls[4]})`
+        }
+        return(
+            <ul class="slideshow">
+                <li style={style1}></li>
+                <li style={style2}></li>
+                <li style={style3}></li>
+                <li style={style4}></li>
+                <li style={style5}></li>
+            </ul>
+        )
     }
+
     getImageUrl = async imageRefUrl => {
         try {
             console.log(imageRefUrl)
@@ -95,21 +90,7 @@ class SlideshowPage extends React.Component {
         console.log(this.state);
     };
 
-    getRandomNumbers = () => {
-        const countRef = this.props.firebase.db.collection("artifacts").doc("count");
-        let randomNumbers = []
-        countRef.get().then(count => {
-            for(var i = 0;i<5;i++){
-                let randomNumber = Math.floor(Math.random() * count.data().count);
-                randomNumbers.push(randomNumber);
-            }
-        })
-        this.setState({
-            randomNumbers: randomNumbers
-        })
-    }
     componentDidMount(){
-        this.getRandomNumbers();
         this.getRandomImages();
     }
     render() {
