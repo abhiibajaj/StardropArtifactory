@@ -96,10 +96,9 @@ class AddArtifactPage extends React.Component {
   handleChange = e => {
     if (e.target.files[0]) {
       const images = e.target.files
-      this.setState(
-        () => ({
-          images: images
-        }),
+      this.setState({
+        images: images
+      },
         () => {
           Object.keys(this.state.images).map(key => {
             let image = this.state.images[key]
@@ -114,6 +113,7 @@ class AddArtifactPage extends React.Component {
               })
             }
             reader.readAsDataURL(image)
+            return null
           })
         }
       )
