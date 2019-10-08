@@ -14,6 +14,7 @@ const getCurrentDate = () => {
 class AddArtifactPage extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       images: [],
       url: "",
@@ -21,7 +22,8 @@ class AddArtifactPage extends React.Component {
       createDate: null,
       day: null,
       month: null,
-      redirect: false
+      redirect: false,
+      preview: []
     }
   }
   setRedirect = () => {
@@ -89,17 +91,31 @@ class AddArtifactPage extends React.Component {
 
   handleChange = e => {
     if (e.target.files[0]) {
-      const image = e.target.files
+      const images = e.target.files
       this.setState(() => ({
-        images: image
+        images: images
       }))
+
+      Object.keys(this.state.images).map(key => {
+        let image = this.state.images[key]
+        let reader = new FileReader()
+
+        reader.onloadend = () => {
+          this.setState(state => {
+            const previewImages = state.previewImages.concat(reader.result)
+            return {
+              previewImages
+            }
+          })
+        }
+        reader.readAsDataURL(image)
+      })
     }
   }
 
   handleForm = e => {
     const description = this.refs.description.value
     const createdDate = this.refs.calendar.state.startDate
-    console.log(createdDate)
     this.setState({
       description: description
     })
@@ -110,7 +126,6 @@ class AddArtifactPage extends React.Component {
         month: createdDate.getMonth() + 1
       })
     }
-    console.log(this.state)
   }
 
   render() {
