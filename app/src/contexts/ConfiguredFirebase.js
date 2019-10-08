@@ -28,4 +28,5 @@ export default class Firebase {
             users: "users"
         };
     }
+  }
 }
