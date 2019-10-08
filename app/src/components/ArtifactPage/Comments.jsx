@@ -70,6 +70,7 @@ class Comments extends React.Component {
       newCommentAuthor: "Jimmy",
       newCommentText: e.target.value
     })
+    e.target.value = ""
     console.log("comment: " + e.target.value)
   }
 
