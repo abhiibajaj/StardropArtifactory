@@ -40,7 +40,7 @@ class AddArtifactPage extends React.Component {
   }
 
   renderButton = () => {
-    if (this.state.images.length > 0) {
+    if (this.state.images.length > 0 && this.state.title.length > 0) {
       return (
         <Button onClick={this.handleUpload} variant='primary'>
           Upload
@@ -76,7 +76,6 @@ class AddArtifactPage extends React.Component {
       const imageTypes = Object.keys(this.state.images).map(key => {
         return this.state.images[key].type
       })
-      console.log(imageTypes)
       db.collection("artifacts")
         .add({
           date: getCurrentDate(),
@@ -92,7 +91,6 @@ class AddArtifactPage extends React.Component {
           this.setRedirect()
         })
     })
-    console.log(this.state)
   }
 
   handleChange = e => {
@@ -123,10 +121,11 @@ class AddArtifactPage extends React.Component {
   }
 
   handleForm = e => {
-    console.log(this.state)
+    const title = this.refs.title.value
     const description = this.refs.description.value
     const createdDate = this.refs.calendar.state.startDate
     this.setState({
+      title: title,
       description: description
     })
     if (createdDate) {
@@ -157,9 +156,9 @@ class AddArtifactPage extends React.Component {
           </Col>
           <Col>
             <Form.Control
+              onChange={this.handleForm}
               type='text'
               placeholder='Title'
-              onChange={this.handleForm}
               ref='title'
             />
           </Col>
