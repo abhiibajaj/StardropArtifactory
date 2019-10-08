@@ -34,16 +34,11 @@ class EditPage extends React.Component {
       }
       this.setState({ artifactExists: true })
       console.log(artifactDoc.data())
-      imageRefUrls = artifactDoc.data().image
-      console.log(imageRefUrls)
-      this.setState({ data: artifactDoc.data() })
-
-      imageRefUrls.forEach(async refUrl => {
-        let imageRef = this.props.firebase.storage.refFromURL(refUrl)
-        const url = await imageRef.getDownloadURL()
-        let images = this.state.images
-        images.push(url)
-        this.setState({ images: images, isLoading: false })
+      // speed opt here: download image first
+      this.setState({
+        data: artifactDoc.data(),
+        images: artifactDoc.data().image,
+        isLoading: false
       })
     } catch (e) {
       console.log("Error getting document:", e)
