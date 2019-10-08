@@ -21,7 +21,7 @@ class HomePage extends React.Component {
     try {
       const querySnapshot = await artifacts.get()
       querySnapshot.forEach(doc => {
-        allImageUrls = [...allImageUrls, ...doc.data().image]
+        allImageUrls = [...allImageUrls, doc.data().image[0]]
       })
     } catch (e) {
       console.log("Error getting document:", e)
@@ -35,8 +35,6 @@ class HomePage extends React.Component {
     return (
       <div>
         {[...this.state.images].map((image, index) => {
-          console.log(image)
-          console.log(index)
           return (
             <img key={index} height='250' width='250' alt='' src={image}></img>
           )
