@@ -19,6 +19,7 @@ function App() {
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
         <AuthRoute path="/home" component={HomePage} />
+        <AuthRoute path="/addartifact" component={AddArtifactPage} />
         <AuthRoute path="/artifact/:artifactId" component={ArtifactPage} />
       </Router>
     </div>
