@@ -18,12 +18,14 @@ class AddArtifactPage extends React.Component {
     this.state = {
       images: [],
       url: "",
+      title: "",
       description: "",
       createDate: null,
       day: null,
       month: null,
       redirect: false,
-      preview: []
+      previewImages: [],
+      user: null
     }
   }
   setRedirect = () => {
@@ -71,7 +73,10 @@ class AddArtifactPage extends React.Component {
     })
     // upload the db with array
     Promise.all(imageUrls).then(listOfImageUrls => {
-      console.log(listOfImageUrls)
+      const imageTypes = Object.keys(this.state.images).map(key => {
+        return this.state.images[key].type
+      })
+      console.log(imageTypes)
       db.collection("artifacts")
         .add({
           date: getCurrentDate(),
@@ -79,7 +84,8 @@ class AddArtifactPage extends React.Component {
           createdTime: this.state.createDate,
           month: this.state.month,
           day: this.state.day,
-          image: listOfImageUrls
+          image: listOfImageUrls,
+          imageTypes: imageTypes
         })
         .then(() => {
           // redirect on complete
@@ -92,28 +98,32 @@ class AddArtifactPage extends React.Component {
   handleChange = e => {
     if (e.target.files[0]) {
       const images = e.target.files
-      this.setState(() => ({
-        images: images
-      }))
-
-      Object.keys(this.state.images).map(key => {
-        let image = this.state.images[key]
-        let reader = new FileReader()
-
-        reader.onloadend = () => {
-          this.setState(state => {
-            const previewImages = state.previewImages.concat(reader.result)
-            return {
-              previewImages
+      this.setState(
+        () => ({
+          images: images
+        }),
+        () => {
+          Object.keys(this.state.images).map(key => {
+            let image = this.state.images[key]
+            let reader = new FileReader()
+            console.log(image)
+            reader.onloadend = () => {
+              this.setState(state => {
+                const previewImages = state.previewImages.concat(reader.result)
+                return {
+                  previewImages
+                }
+              })
             }
+            reader.readAsDataURL(image)
           })
         }
-        reader.readAsDataURL(image)
-      })
+      )
     }
   }
 
   handleForm = e => {
+    console.log(this.state)
     const description = this.refs.description.value
     const createdDate = this.refs.calendar.state.startDate
     this.setState({
@@ -143,11 +153,25 @@ class AddArtifactPage extends React.Component {
         </Form.Row>
         <Form.Row>
           <Col sm={3}>
+            <h6>Title:</h6>
+          </Col>
+          <Col>
+            <Form.Control
+              type='text'
+              placeholder='Title'
+              onChange={this.handleForm}
+              ref='title'
+            />
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col sm={3}>
             <h6>Descripton:</h6>
           </Col>
           <Col>
             <Form.Control
               onChange={this.handleForm}
+              placeholder='Description'
               ref='description'
               as='textarea'
             />
