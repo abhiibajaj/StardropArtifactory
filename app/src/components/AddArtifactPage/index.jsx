@@ -22,6 +22,7 @@ class AddArtifactPage extends React.Component {
       description: "",
       createDate: null,
       day: null,
+      random: null,
       month: null,
       redirect: false,
       previewImages: [],
@@ -79,12 +80,14 @@ class AddArtifactPage extends React.Component {
       db.collection("artifacts")
         .add({
           date: getCurrentDate(),
+          title: this.state.title,
           description: this.state.description,
           createdTime: this.state.createDate,
           month: this.state.month,
           day: this.state.day,
           image: listOfImageUrls,
-          imageTypes: imageTypes
+          imageTypes: imageTypes,
+          random: Math.floor(Math.random() * Math.floor(10000))
         })
         .then(() => {
           // redirect on complete
@@ -96,9 +99,10 @@ class AddArtifactPage extends React.Component {
   handleChange = e => {
     if (e.target.files[0]) {
       const images = e.target.files
-      this.setState({
-        images: images
-      },
+      this.setState(
+        {
+          images: images
+        },
         () => {
           Object.keys(this.state.images).map(key => {
             let image = this.state.images[key]
