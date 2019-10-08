@@ -1,9 +1,48 @@
-import React from 'react'
+import React from "react"
+import withFirebase from "../../contexts/withFirebase"
 
-export default class HomePage extends React.Component {
+class HomePage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      images: []
+    }
+  }
+
+  componentDidMount() {
+    this.getAllArtifacts()
+  }
+
+  getAllArtifacts = async () => {
+    const db = this.props.firebase.db
+    const artifacts = db.collection("artifacts")
+    let allImageUrls = []
+
+    try {
+      const querySnapshot = await artifacts.get()
+      querySnapshot.forEach(doc => {
+        allImageUrls = [...allImageUrls, doc.data().image[0]]
+      })
+    } catch (e) {
+      console.log("Error getting document:", e)
+    }
+    this.setState({
+      images: allImageUrls
+    })
+  }
+
   render() {
     return (
-      <div>Hello Auth Page</div>
+      <div>
+        {[...this.state.images].map((image, index) => {
+          return (
+            <img key={index} height='250' width='250' alt='' src={image}></img>
+          )
+        })}
+      </div>
     )
+    //return <button onClick={this.getAllArtifacts}>Hello Auth Page</button>;
   }
 }
+
+export default withFirebase(HomePage)
