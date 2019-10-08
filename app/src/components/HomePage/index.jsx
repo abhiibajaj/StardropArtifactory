@@ -1,6 +1,7 @@
-import React from 'react'
-import withFirebase from '../../contexts/withFirebase'
+import React from "react"
+import withFirebase from "../../contexts/withFirebase"
 import Search from '../Search'
+
 class HomePage extends React.Component {
   render() {
     return (

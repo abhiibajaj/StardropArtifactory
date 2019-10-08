@@ -1,32 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { Link } from "react-router-dom"
 import { Card } from 'react-bootstrap'
 import styles from './Item.module.css'
-import RippleLoader from '../../RippleLoader'
 
 export default function Item({ data = {}, storage }) {
-  const [image, setImage] = useState('')
-
-  useEffect(() => {
-    storage
-      .refFromURL(data.image)
-      .getDownloadURL()
-      .then(url => setImage(url))
-  }, [data, image, storage])
-
   return (
-    <div className={styles.container}>
-      <Card className={styles.card}>
-        <div style={{ height: '300px' }}>
+    <Link to={`/artifact/${data.objectID}`}>
+      <div className={styles.container}>
+        <Card className={styles.card}>
           {
-            image === ''
-              ? <RippleLoader />
-              : <Card.Img variant="top" src={image} />
+            data.imageTypes
+              && data.imageTypes[0]
+              && data.imageTypes[0].startsWith('image') ?
+              <Card.Img style={{ 'height': '300px', 'objectFit': 'cover' }} variant="top" src={data.image[0]} />
+              : <Card.Img style={{ 'height': '300px', 'objectFit': 'cover' }} variant="top" src={data.image[0]} />
           }
-        </div>
-        <Card.Body>
-          <Card.Text>{data.description}</Card.Text>
-        </Card.Body>
-      </Card>
-    </div>
+          <Card.Body>
+            <Card.Text>{data.description}</Card.Text>
+          </Card.Body>
+        </Card>
+      </div>
+    </Link>
   )
 }
