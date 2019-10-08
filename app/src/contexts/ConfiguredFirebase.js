@@ -17,7 +17,6 @@ export default class Firebase {
     constructor() {
         app.initializeApp(firebaseConfig);
         app.auth().useDeviceLanguage();
-
         this.auth = app.auth();
         this.db = app.firestore();
         this.storage = app.storage();
