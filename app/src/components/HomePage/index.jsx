@@ -1,15 +1,8 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
+import React from "react"
+import Button from "react-bootstrap/Button"
 
 export default class HomePage extends React.Component {
-    render() {
-        return (
-            <div>
-                Hello Auth Page
-                <Button href="/addartifact" variant="primary">
-                    Add artifact
-                </Button>
-            </div>
-        );
-    }
+  render() {
+    return <div>Hello Auth Page</div>
+  }
 }
