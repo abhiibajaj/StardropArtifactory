@@ -1,7 +1,7 @@
-import app from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
-import 'firebase/storage'
+import app from "firebase/app"
+import "firebase/firestore"
+import "firebase/auth"
+import "firebase/storage"
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9jCRrp2ClEXQlZ1L7YoKJVfTeftE_bZw",
@@ -21,13 +21,12 @@ export default class Firebase {
     this.auth = app.auth()
     this.db = app.firestore()
     this.storage = app.storage()
-    
     this.providers = {
       //google: new app.auth.GoogleAuthProvider()
     }
     this.collections = {
-      items: 'items',
-      users: 'users',
+      items: "items",
+      users: "users"
     }
   }
 }
