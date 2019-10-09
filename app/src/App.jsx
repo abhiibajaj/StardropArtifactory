@@ -8,7 +8,10 @@ import SignInPage from "./components/SignInPage"
 import SignUpPage from "./components/SignUpPage"
 import Navbar from "./components/Navbar"
 import AuthRoute from "./components/AuthRoute"
+<<<<<<< HEAD
 import AddArtifactPage from "./components/AddArtifactPage"
+=======
+>>>>>>> ead075a2c4e05ec8f923ae514e4710b7da618fef
 import ArtifactPage from "./components/ArtifactPage"
 import EditPage from "./components/EditPage"
 
@@ -21,7 +24,10 @@ function App() {
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
         <AuthRoute path="/home" component={HomePage} />
+<<<<<<< HEAD
         <AuthRoute path="/addartifact" component={AddArtifactPage} />
+=======
+>>>>>>> ead075a2c4e05ec8f923ae514e4710b7da618fef
         <AuthRoute
           path="/artifact/:artifactId"
           exact
