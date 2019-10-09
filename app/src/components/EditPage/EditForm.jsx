@@ -16,6 +16,7 @@ class EditForm extends React.Component {
       createdTime: new Date(props.artifactData.createdTime.seconds * 1000),
       day: props.artifactData.day,
       month: props.artifactData.month,
+      tags: props.artifactData.tags,
       changesMade: false,
       errors: [],
       redirect: false
@@ -37,7 +38,8 @@ class EditForm extends React.Component {
       description: this.state.description,
       createdTime: this.state.createdTime,
       day: this.state.day,
-      month: this.state.month
+      month: this.state.month,
+      tags: this.state.tags
     })
     this.setState({ redirect: true })
     this.clearErrors()
@@ -56,6 +58,13 @@ class EditForm extends React.Component {
       createdTime: startDate,
       day: startDate.getDate(),
       month: startDate.getMonth() + 1,
+      changesMade: true
+    })
+  }
+
+  handleUpdateTag = e => {
+    this.setState({
+      tags: e.target.value.split(" "),
       changesMade: true
     })
   }
@@ -109,6 +118,16 @@ class EditForm extends React.Component {
               defaultValue={this.state.createdTime.toDateString()}
               ref="editCalendar"
             />
+          </Form.Field>
+          <Form.Field>
+            <label>Tags</label>
+            <textarea
+              rows="2"
+              type="text"
+              name="tags"
+              value={this.state.tags.join(" ")}
+              onChange={this.handleUpdateTag}
+            ></textarea>
           </Form.Field>
           {this.renderErrors()}
           <Button type="submit">Submit</Button>
