@@ -11,12 +11,15 @@ import AuthRoute from "./components/AuthRoute"
 import AddArtifactPage from "./components/AddArtifactPage"
 import ArtifactPage from "./components/ArtifactPage"
 import EditPage from "./components/EditPage"
+import withAuth from "./contexts/withAuth"
 
-function App() {
+function App(props) {
   return (
     <div>
       <Router>
-        <Navbar />
+        {/* Show the navbar if logged in */}
+        {props.auth.loggedIn ? <Navbar /> : ''}
+
         <Route path="/" exact component={LandingPage} />
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
@@ -37,4 +40,4 @@ function App() {
   )
 }
 
-export default App
+export default withAuth(App)

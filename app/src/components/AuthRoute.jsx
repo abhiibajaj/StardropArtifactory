@@ -11,7 +11,7 @@ class AuthRoute extends React.Component {
       (auth.loggedIn === true)
         ? <Component {...routerProps} />
         : (auth.loggedIn === false)
-          ? <Redirect to='/signin' />
+          ? <Redirect to='/' />
           : <Loading />
     )
   }
