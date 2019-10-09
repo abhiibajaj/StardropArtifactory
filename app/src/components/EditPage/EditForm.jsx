@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Input, Form } from "semantic-ui-react"
+import { Button, Form } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
@@ -33,7 +33,7 @@ class EditForm extends React.Component {
     let artifact = this.props.firebase.db
       .collection("artifacts")
       .doc(this.state.artifactId)
-    let update = artifact.update({
+    artifact.update({
       title: this.state.title,
       description: this.state.description,
       createdTime: this.state.createdTime,

@@ -21,6 +21,7 @@ function App() {
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
         <AuthRoute path="/home" component={HomePage} />
+        <AuthRoute path="/addartifact" component={AddArtifactPage} />
         <AuthRoute
           path="/artifact/:artifactId"
           exact
@@ -31,7 +32,6 @@ function App() {
           exact
           component={EditPage}
         />
-        <AuthRoute path="/addartifact" component={AddArtifactPage} />
       </Router>
     </div>
   )

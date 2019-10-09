@@ -5,6 +5,7 @@ import RightArrow from "./RightArrow"
 import LeftArrow from "./LeftArrow"
 import Spinner from "./Spinner"
 import EditIcon from "./EditIcon"
+import Comments from "./Comments"
 
 class ArtifactPage extends React.Component {
   constructor(props) {
@@ -83,6 +84,15 @@ class ArtifactPage extends React.Component {
         </div>
         <RightArrow goToNextSlide={this.goToNextSlide} />
         <EditIcon artifactId={this.state.artifactId} />
+        {this.displayComments()}
+      </div>
+    )
+  }
+
+  displayComments = () => {
+    return (
+      <div>
+        <Comments artifactId={this.state.artifactId} />
       </div>
     )
   }

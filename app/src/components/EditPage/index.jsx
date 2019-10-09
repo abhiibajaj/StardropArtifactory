@@ -24,8 +24,6 @@ class EditPage extends React.Component {
     let artifact = this.props.firebase.db
       .collection("artifacts")
       .doc(artifactId)
-
-    let imageRefUrls = []
     try {
       const artifactDoc = await artifact.get()
       if (!artifactDoc.exists) {
