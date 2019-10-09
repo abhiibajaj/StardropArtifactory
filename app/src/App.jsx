@@ -9,6 +9,7 @@ import SignUpPage from "./components/SignUpPage"
 import Navbar from "./components/Navbar"
 import AuthRoute from "./components/AuthRoute"
 import AddArtifactPage from "./components/AddArtifactPage"
+import SlideshowPage from './components/SlideshowPage'
 import ArtifactPage from "./components/ArtifactPage"
 import EditPage from "./components/EditPage"
 import withAuth from "./contexts/withAuth"
@@ -23,6 +24,7 @@ function App(props) {
         <Route path="/" exact component={LandingPage} />
         <Route path="/signin" component={SignInPage} />
         <Route path="/signup" component={SignUpPage} />
+        <AuthRoute path='/slideshow' component={SlideshowPage}/>
         <AuthRoute path="/home" component={HomePage} />
         <AuthRoute path="/addartifact" component={AddArtifactPage} />
         <AuthRoute
