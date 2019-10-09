@@ -20,6 +20,7 @@ class AddArtifactPage extends React.Component {
       url: "",
       title: "",
       description: "",
+      tags: [],
       createDate: null,
       day: null,
       random: null,
@@ -82,6 +83,7 @@ class AddArtifactPage extends React.Component {
           date: getCurrentDate(),
           title: this.state.title,
           description: this.state.description,
+          tags: this.state.tags,
           createdTime: this.state.createDate,
           month: this.state.month,
           day: this.state.day,
@@ -128,9 +130,12 @@ class AddArtifactPage extends React.Component {
     const title = this.refs.title.value
     const description = this.refs.description.value
     const createdDate = this.refs.calendar.state.startDate
+    const tags = this.refs.tags.value
+
     this.setState({
       title: title,
-      description: description
+      description: description,
+      tags: tags.split(" ")
     })
     if (createdDate) {
       this.setState({
@@ -177,6 +182,19 @@ class AddArtifactPage extends React.Component {
               placeholder='Description'
               ref='description'
               as='textarea'
+            />
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col sm={3}>
+            <h6>Tags:</h6>
+          </Col>
+          <Col>
+            <Form.Control
+              onChange={this.handleForm}
+              type='text'
+              placeholder='Tags! Seperate with spaces'
+              ref='tags'
             />
           </Col>
         </Form.Row>
