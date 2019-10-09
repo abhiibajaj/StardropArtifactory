@@ -10,18 +10,28 @@ import Navbar from "./components/Navbar"
 import AuthRoute from "./components/AuthRoute"
 import AddArtifactPage from "./components/AddArtifactPage"
 import ArtifactPage from "./components/ArtifactPage"
+import EditPage from "./components/EditPage"
 
 function App() {
   return (
     <div>
       <Router>
         <Navbar />
-        <Route path='/' exact component={LandingPage} />
-        <Route path='/signin' component={SignInPage} />
-        <Route path='/signup' component={SignUpPage} />
-        <AuthRoute path='/home' component={HomePage} />
-        <AuthRoute path='/addartifact' component={AddArtifactPage} />
-        <AuthRoute path='/artifact/:artifactId' component={ArtifactPage} />
+        <Route path="/" exact component={LandingPage} />
+        <Route path="/signin" component={SignInPage} />
+        <Route path="/signup" component={SignUpPage} />
+        <AuthRoute path="/home" component={HomePage} />
+        <AuthRoute
+          path="/artifact/:artifactId"
+          exact
+          component={ArtifactPage}
+        />
+        <AuthRoute
+          path="/artifact/edit/:artifactId"
+          exact
+          component={EditPage}
+        />
+        <AuthRoute path="/addartifact" component={AddArtifactPage} />
       </Router>
     </div>
   )

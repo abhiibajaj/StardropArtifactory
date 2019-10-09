@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card"
 import RightArrow from "./RightArrow"
 import LeftArrow from "./LeftArrow"
 import Spinner from "./Spinner"
+import EditIcon from "./EditIcon"
 
 class ArtifactPage extends React.Component {
   constructor(props) {
@@ -81,6 +82,7 @@ class ArtifactPage extends React.Component {
           </Card>
         </div>
         <RightArrow goToNextSlide={this.goToNextSlide} />
+        <EditIcon artifactId={this.state.artifactId} />
       </div>
     )
   }
