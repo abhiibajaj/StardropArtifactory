@@ -60,7 +60,6 @@ class EditPage extends React.Component {
   render() {
     return (
       <div>
-        Editing {this.state.artifactId}
         {this.state.isLoading && <div>Loading...</div>}
         {this.state.artifactExists &&
           !this.state.isLoading &&
