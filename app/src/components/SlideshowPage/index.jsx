@@ -50,26 +50,38 @@ class SlideshowPage extends React.Component {
 
       try {
         const querySnapshot = await artifacts
+          .where("imageTypeCount", "==", 1)
           .where("random", ">=", randomNum)
-          .where("imageTypeCount", ">", 0)
           .limit(1)
           .get()
         if (querySnapshot.size > 0) {
           querySnapshot.forEach(doc => {
-            console.log(doc.data())
-            allImageUrls.push(doc.data().image)
+            let imageIndex = 0
+            let imageTypes = doc.data().imageTypes
+            for (var i = 0; i < imageTypes.length; i++) {
+              if (imageTypes[i].substring(0, 4) === "image") {
+                imageIndex = i
+                break
+              }
+            }
+            allImageUrls.push(doc.data().image[imageIndex])
           })
         } else {
           const querySnapshot = await artifacts
+            .where("imageTypeCount", "==", 1)
             .where("random", "<", randomNum)
-            .where("imageTypeCount", ">", 0)
             .limit(1)
             .get()
           querySnapshot.forEach(doc => {
-            console.log("HELLO")
-            console.log(doc.data())
-
-            allImageUrls.push(doc.data().image)
+            let imageIndex = 0
+            let imageTypes = doc.data().imageTypes
+            for (var i = 0; i < imageTypes.length; i++) {
+              if (imageTypes[i].substring(0, 4) === "image") {
+                imageIndex = i
+                break
+              }
+            }
+            allImageUrls.push(doc.data().image[imageIndex])
           })
         }
       } catch (e) {
@@ -80,7 +92,6 @@ class SlideshowPage extends React.Component {
     this.setState({
       allImageUrls: allImageUrls
     })
-    console.log(this.state)
   }
 
   componentDidMount() {
