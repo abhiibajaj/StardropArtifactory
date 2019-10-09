@@ -51,18 +51,24 @@ class SlideshowPage extends React.Component {
       try {
         const querySnapshot = await artifacts
           .where("random", ">=", randomNum)
+          .where("imageTypeCount", ">", 0)
           .limit(1)
           .get()
         if (querySnapshot.size > 0) {
           querySnapshot.forEach(doc => {
+            console.log(doc.data())
             allImageUrls.push(doc.data().image)
           })
         } else {
           const querySnapshot = await artifacts
             .where("random", "<", randomNum)
+            .where("imageTypeCount", ">", 0)
             .limit(1)
             .get()
           querySnapshot.forEach(doc => {
+            console.log("HELLO")
+            console.log(doc.data())
+
             allImageUrls.push(doc.data().image)
           })
         }
