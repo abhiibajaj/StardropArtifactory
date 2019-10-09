@@ -1,9 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import withAuth from "../../contexts/withAuth"
 
-const LoginForm = () => (
+const LoginForm = (props) => (
   <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle' >
+    {/* Redirect to home if logged in */}
+    {
+      props.auth.loggedIn
+        ? <Redirect to="/home" /> : ''
+    }
     <Grid.Column style={{ maxWidth: 450 }}>
       <Header as='h2' color='violet' textAlign='center'>
         <Image src='/logo.png' /> Littleson Family Artefacts
@@ -27,4 +33,4 @@ const LoginForm = () => (
   </Grid >
 )
 
-export default LoginForm
+export default withAuth(LoginForm)
