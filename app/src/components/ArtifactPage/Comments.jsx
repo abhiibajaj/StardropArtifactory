@@ -31,7 +31,7 @@ class Comments extends React.Component {
       .orderBy("dateCreated")
     let commentsCount = 0
     this.setState({ comments: [] })
-    let commentsGet = commentsRef
+    commentsRef
       .get()
       .then(snapshot => {
         snapshot.forEach(comment => {
@@ -62,7 +62,7 @@ class Comments extends React.Component {
       this.setState({ errors: errors })
       return
     }
-    let commentsRef = this.props.firebase.db
+    this.props.firebase.db
       .collection("artifacts")
       .doc(this.state.artifactId)
       .collection("comments")
