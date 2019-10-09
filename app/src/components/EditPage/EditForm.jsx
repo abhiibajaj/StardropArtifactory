@@ -43,10 +43,6 @@ class EditForm extends React.Component {
     this.clearErrors()
   }
 
-  handleClearForm = () => {
-    // Logic for resetting the form
-  }
-
   handleUpdate = e => {
     let value = e.target.value
     let name = e.target.name
@@ -88,19 +84,23 @@ class EditForm extends React.Component {
         <Form onSubmit={this.handleFormSubmit} size="large">
           <Form.Field>
             <label>Title</label>
-            <input
+            <textarea
+              rows="1"
+              type="text"
               name="title"
               value={this.state.title}
               onChange={this.handleUpdate}
-            />
+            ></textarea>
           </Form.Field>
           <Form.Field>
             <label>Description</label>
-            <input
+            <textarea
+              rows="2"
+              type="text"
               name="description"
               value={this.state.description}
               onChange={this.handleUpdate}
-            />
+            ></textarea>
           </Form.Field>
           <Form.Field>
             <label>Date of Origin</label>
