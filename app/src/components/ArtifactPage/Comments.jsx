@@ -58,7 +58,7 @@ class Comments extends React.Component {
   handleFormSubmit = () => {
     if (this.state.newCommentText === "") {
       let errors = this.state.errors
-      errors.push(<p>"No changes have been made"</p>)
+      errors.push(<p>You cannot leave an empty comment.</p>)
       this.setState({ errors: errors })
       return
     }
@@ -112,10 +112,10 @@ class Comments extends React.Component {
             />
             {this.renderErrors()}
             <Button
+              color="violet"
               content="Add Comment"
               labelPosition="left"
               icon="edit"
-              primary
             />
           </Form>
         </Comment.Group>
