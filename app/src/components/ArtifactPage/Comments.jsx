@@ -1,5 +1,6 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
+import withAuth from "../../contexts/withAuth"
 import { Button, Comment, Form, Header } from "semantic-ui-react"
 import CommentContainer from "./CommentContainer"
 
@@ -10,7 +11,9 @@ class Comments extends React.Component {
       artifactId: this.props.artifactId,
       comments: [],
       newCommentAuthor: "",
-      newCommentText: ""
+      newCommentText: "",
+      newCommentDate: null,
+      errors: []
     }
   }
 
@@ -25,6 +28,7 @@ class Comments extends React.Component {
       .collection("artifacts")
       .doc(artifactId)
       .collection("comments")
+      .orderBy("dateCreated")
     let commentsCount = 0
     this.setState({ comments: [] })
     let commentsGet = commentsRef
@@ -52,6 +56,12 @@ class Comments extends React.Component {
   }
 
   handleFormSubmit = () => {
+    if (this.state.newCommentText === "") {
+      let errors = this.state.errors
+      errors.push(<p>"No changes have been made"</p>)
+      this.setState({ errors: errors })
+      return
+    }
     let commentsRef = this.props.firebase.db
       .collection("artifacts")
       .doc(this.state.artifactId)
@@ -64,14 +74,26 @@ class Comments extends React.Component {
       })
     console.log("Form submitted")
     this.fetchComments()
+    this.clearErrors()
   }
   updateComment = e => {
     this.setState({
-      newCommentAuthor: "Jimmy",
-      newCommentText: e.target.value
+      newCommentAuthor: this.props.auth.data.email,
+      newCommentText: e.target.value,
+      newCommentDate: new Date()
     })
     e.target.value = ""
-    console.log("comment: " + e.target.value)
+  }
+
+  renderErrors = () => {
+    if (this.state.errors.length === 0) {
+      return
+    }
+    return this.state.errors[0]
+  }
+
+  clearErrors = () => {
+    this.setState({ errors: [] })
   }
 
   render() {
@@ -88,6 +110,7 @@ class Comments extends React.Component {
               onBlur={this.updateComment}
               placeholder="Say something..."
             />
+            {this.renderErrors()}
             <Button
               content="Add Comment"
               labelPosition="left"
@@ -101,4 +124,4 @@ class Comments extends React.Component {
   }
 }
 
-export default withFirebase(Comments)
+export default withAuth(withFirebase(Comments))
