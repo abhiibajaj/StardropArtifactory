@@ -83,6 +83,7 @@ class AddArtifactPage extends React.Component {
           date: getCurrentDate(),
           title: this.state.title,
           description: this.state.description,
+          tags: this.state.tags,
           createdTime: this.state.createDate,
           month: this.state.month,
           day: this.state.day,
