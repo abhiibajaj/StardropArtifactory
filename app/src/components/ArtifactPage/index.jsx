@@ -11,7 +11,8 @@ import {
   Label,
   Image,
   Placeholder,
-  Icon
+  Icon,
+  Message
 } from "semantic-ui-react"
 import EditIcon from "./EditIcon"
 import Comments from "./Comments"
@@ -186,9 +187,12 @@ class ArtifactPage extends React.Component {
     } else if (!this.state.artifactExists) {
       slider = (
         <Slider>
-          <Label basic color="red">
-            This artifact does not exist.
-          </Label>
+          <Message icon style={{ height: 200, width: 300 }} color="red">
+            <Message.Content>
+              <Message.Header>Oh no...</Message.Header>
+              We couldn't find this artifact.
+            </Message.Content>
+          </Message>
         </Slider>
       )
     } else {
