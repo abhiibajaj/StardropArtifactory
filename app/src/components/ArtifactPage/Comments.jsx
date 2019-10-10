@@ -99,7 +99,7 @@ class Comments extends React.Component {
   render() {
     return (
       <div>
-        <Comment.Group>
+        <Comment.Group size>
           <Header as="h3" dividing>
             Comments
           </Header>
@@ -108,7 +108,7 @@ class Comments extends React.Component {
             <Form.TextArea
               className="commentBox"
               onBlur={this.updateComment}
-              placeholder="Say something..."
+              placeholder="Write a comment..."
             />
             {this.renderErrors()}
             <Button

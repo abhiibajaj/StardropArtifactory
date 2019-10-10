@@ -40,7 +40,6 @@ const CommentContainer = props => {
         </Comment.Metadata>
         <Comment.Text>{props.text}</Comment.Text>
       </Comment.Content>
-      {console.log(props.text)}
     </Comment>
   )
 }

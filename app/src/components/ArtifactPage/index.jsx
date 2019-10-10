@@ -1,8 +1,22 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import Card from "react-bootstrap/Card"
-import RightArrow from "./RightArrow"
-import LeftArrow from "./LeftArrow"
+import {
+  CarouselProvider,
+  Image,
+  Slide,
+  Slider,
+  Dot
+} from "pure-react-carousel"
+import "pure-react-carousel/dist/react-carousel.es.css"
+import {
+  Segment,
+  Grid,
+  Item,
+  Divider,
+  Button,
+  Container,
+  Header
+} from "semantic-ui-react"
 import Spinner from "./Spinner"
 import EditIcon from "./EditIcon"
 import Comments from "./Comments"
@@ -16,7 +30,9 @@ class ArtifactPage extends React.Component {
       isLoading: true,
       artifactExists: false,
       images: [],
-      imageIndex: 0
+      imageTypes: [],
+      imageIndex: 0,
+      slides: []
     }
   }
   componentDidMount() {
@@ -32,82 +48,97 @@ class ArtifactPage extends React.Component {
     try {
       const artifactDoc = await artifact.get()
       if (!artifactDoc.exists) {
-        this.setState({ isLoading: false })
+        this.setState({ artifactExists: false, isLoading: false })
         return
       }
-      this.setState({ artifactExists: true })
       console.log(artifactDoc.data())
-      // speed opt here: download image first
       this.setState({
         data: artifactDoc.data(),
         images: artifactDoc.data().image,
+        imageTypes: artifactDoc.data().imageTypes,
+        artifactExists: true,
         isLoading: false
       })
+      this.buildSliders()
     } catch (e) {
       console.log("Error getting document:", e)
     }
   }
 
-  goToPrevSlide = () => {
-    if (this.state.imageIndex === 0) {
-      return this.setState({ imageIndex: this.state.images.length - 1 })
-    }
-    this.setState({ imageIndex: this.state.imageIndex - 1 })
-  }
-
-  goToNextSlide = () => {
-    if (this.state.imageIndex === this.state.images.length - 1) {
-      return this.setState({ imageIndex: 0 })
-    }
-    this.setState({ imageIndex: this.state.imageIndex + 1 })
+  buildSliders = () => {
+    this.state.images.forEach((item, index) => {
+      let slides = this.state.slides
+      let slide = (
+        <Slide index={index} key={index}>
+          <Image hasMasterSpinner={true} src={item} />
+        </Slide>
+      )
+      slides.push(slide)
+      this.setState({ slides: slides })
+    })
   }
 
   buildSlide = () => {
     return (
-      <div className="slider" style={{ display: "flex" }}>
-        <LeftArrow goToPrevSlide={this.goToPrevSlide} />
-        <div className="slide">
-          <Card style={{ width: "18rem" }}>
-            <Card.Img
-              variant="top"
-              src={this.state.images[this.state.imageIndex]}
-              alt="missing"
-            />
-            <Card.Body>
-              <Card.Title>{this.state.data.description}</Card.Title>
-              <Card.Text>
-                Created by {this.state.data.ownerId} <br />
-                Related to {this.state.data.relatedFamilyMembers}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-        <RightArrow goToNextSlide={this.goToNextSlide} />
-        <EditIcon artifactId={this.state.artifactId} />
-        {this.displayComments()}
-      </div>
-    )
-  }
-
-  displayComments = () => {
-    return (
-      <div>
-        <Comments artifactId={this.state.artifactId} />
-      </div>
+      <CarouselProvider
+        naturalSlideWidth={1}
+        naturalSlideHeight={1}
+        totalSlides={this.state.images.length}
+      >
+        <Slider>{this.state.slides.map(slide => slide)}</Slider>
+        <Divider />
+        <Container textAlign="center">
+          <Button.Group>
+            {[...Array(2).keys()].map(slide => (
+              <Button as={Dot} key={slide} icon="circle" slide={slide} />
+            ))}
+          </Button.Group>
+        </Container>
+      </CarouselProvider>
     )
   }
 
   render() {
     return (
-      <div>
-        {this.state.isLoading && <Spinner />}
-        {this.state.artifactExists &&
-          !this.state.isLoading &&
-          this.buildSlide()}
-        {!this.state.artifactExists && !this.state.isLoading && (
-          <div>The artifact does not exsit. </div>
-        )}
-      </div>
+      <Grid centered={true}>
+        <Grid.Row columns={1}>
+          <Grid.Column>
+            <Header
+              textAlign="center"
+              color="violet"
+              as="h3"
+              style={{ fontSize: "2em" }}
+            >
+              {this.state.data.title}
+            </Header>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row columns={2}>
+          <Grid.Column width={6}>
+            {this.state.isLoading && <Spinner />}
+            {this.state.artifactExists &&
+              !this.state.isLoading &&
+              this.buildSlide()}
+            {!this.state.artifactExists && !this.state.isLoading && (
+              <div>The artifact does not exsit. </div>
+            )}
+            <EditIcon artifactId={this.state.artifactId} />
+          </Grid.Column>
+
+          <Grid.Column width={4}>
+            <Grid.Row columns={1}>
+              <p style={{ fontSize: "1.33em" }}>
+                {this.state.data.description}
+              </p>
+            </Grid.Row>
+
+            <Grid.Row columns={1}>
+              <Comments artifactId={this.state.artifactId} />
+            </Grid.Row>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     )
   }
 }
