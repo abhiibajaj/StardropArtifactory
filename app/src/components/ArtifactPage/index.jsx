@@ -9,9 +9,10 @@ import {
   Button,
   Header,
   Label,
-  Image
+  Image,
+  Placeholder,
+  Icon
 } from "semantic-ui-react"
-import Spinner from "./Spinner"
 import EditIcon from "./EditIcon"
 import Comments from "./Comments"
 
@@ -74,7 +75,7 @@ class ArtifactPage extends React.Component {
     allTags.forEach((tag, index) => {
       let tags = this.state.tags
       let label = (
-        <Label as="a" tag key={index}>
+        <Label as="a" tag key={index} size="mini">
           {tag}
         </Label>
       )
@@ -88,14 +89,7 @@ class ArtifactPage extends React.Component {
       let slides = this.state.slides
       let slide = (
         <Slide index={index} key={index}>
-          <Image
-            bordered
-            rounded
-            style={{ height: "500px", width: "500px", objectFit: "cover" }}
-            variant="middle"
-            src={item}
-          />
-          {/* <Image hasMasterSpinner={true} src={item} /> */}
+          {this.getDisplayImageForFileType(this.state.imageTypes[index], item)}
         </Slide>
       )
       slides.push(slide)
@@ -103,7 +97,103 @@ class ArtifactPage extends React.Component {
     })
   }
 
+  getDisplayImageForFileType = (type, src) => {
+    console.log(type)
+    if (type.includes("image")) {
+      return (
+        <Image
+          bordered
+          rounded
+          style={{ height: "500px", width: "500px", objectFit: "cover" }}
+          variant="middle"
+          src={src}
+        />
+      )
+    }
+    if (type.includes("pdf")) {
+      return (
+        <a href={src}>
+          <Grid
+            centered={true}
+            verticalAlign="bottom"
+            style={{ padding: "10em 2em" }}
+          >
+            <Grid.Column>
+              <Header as="h3" icon>
+                <Icon name="file pdf outline" size="huge" />
+                This artifact is a PDF document
+                <Header.Subheader>
+                  Please click on the icon to download the document.
+                </Header.Subheader>
+              </Header>
+            </Grid.Column>
+          </Grid>
+        </a>
+      )
+    }
+    if (type.includes("html")) {
+      return (
+        <a href={src}>
+          <Grid
+            centered={true}
+            verticalAlign="bottom"
+            style={{ padding: "10em 2em" }}
+          >
+            <Grid.Column>
+              <Header as="h3" icon>
+                <Icon name="file code outline" size="huge" />
+                This artifact is a html file.
+                <Header.Subheader>
+                  Please click on the icon to download the file.
+                </Header.Subheader>
+              </Header>
+            </Grid.Column>
+          </Grid>
+        </a>
+      )
+    }
+    return (
+      <a href={src}>
+        <Grid
+          centered={true}
+          verticalAlign="bottom"
+          style={{ padding: "10em 2em" }}
+        >
+          <Grid.Column>
+            <Header as="h3" icon>
+              <Icon name="exclamation circle" size="huge" />
+              This artifact is of unknown type
+              <Header.Subheader>
+                Please click on the icon to download the artifact.
+              </Header.Subheader>
+            </Header>
+          </Grid.Column>
+        </Grid>
+      </a>
+    )
+  }
+
   buildSlide = () => {
+    let slider = null
+    if (this.state.isLoading) {
+      slider = (
+        <Slider>
+          <Placeholder style={{ height: 400, width: 400 }}>
+            <Placeholder.Image />
+          </Placeholder>
+        </Slider>
+      )
+    } else if (!this.state.artifactExists) {
+      slider = (
+        <Slider>
+          <Label basic color="red">
+            This artifact does not exist.
+          </Label>
+        </Slider>
+      )
+    } else {
+      slider = <Slider>{this.state.slides.map(slide => slide)}</Slider>
+    }
     const len = this.state.images.length
     return (
       <CarouselProvider
@@ -111,7 +201,7 @@ class ArtifactPage extends React.Component {
         naturalSlideHeight={1}
         totalSlides={len}
       >
-        <Slider>{this.state.slides.map(slide => slide)}</Slider>
+        {slider}
         <Divider />
         <Button.Group size="mini" color="violet" fluid>
           {[...Array(len).keys()].map(slide => (
@@ -125,7 +215,11 @@ class ArtifactPage extends React.Component {
   render() {
     return (
       <Segment vertical>
-        <Grid centered={true} style={{ padding: "2em 0em" }}>
+        <Grid
+          centered={true}
+          verticalAlign="bottom"
+          style={{ padding: "2em 0em" }}
+        >
           <Grid.Row columns={1}>
             <Grid.Column textAlign="center">
               <Header color="violet" as="h1" style={{ fontSize: "2em" }}>
@@ -135,15 +229,7 @@ class ArtifactPage extends React.Component {
           </Grid.Row>
 
           <Grid.Row columns={2}>
-            <Grid.Column width={5}>
-              {this.state.isLoading && <Spinner />}
-              {this.state.artifactExists &&
-                !this.state.isLoading &&
-                this.buildSlide()}
-              {!this.state.artifactExists && !this.state.isLoading && (
-                <div>The artifact does not exsit. </div>
-              )}
-            </Grid.Column>
+            <Grid.Column width={5}>{this.buildSlide()}</Grid.Column>
 
             <Grid.Column width={4}>
               <Grid.Row columns={1}>
