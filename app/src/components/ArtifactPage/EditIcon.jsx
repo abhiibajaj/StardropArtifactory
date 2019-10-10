@@ -1,11 +1,17 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { Button } from "semantic-ui-react"
 
 const EditIcon = props => {
   return (
     <div className="edit-icon">
       <Link to={"/artifact/edit/" + props.artifactId}>
-        <i className="fa fa-pencil-square-o fa-4x" aria-hidden="true"></i>
+        <Button
+          color="violet"
+          content="Edit Artifact"
+          labelPosition="left"
+          icon="edit"
+        />
       </Link>
     </div>
   )

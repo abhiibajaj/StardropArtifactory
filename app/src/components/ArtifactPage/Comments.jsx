@@ -99,10 +99,8 @@ class Comments extends React.Component {
   render() {
     return (
       <div>
-        <Comment.Group size>
-          <Header as="h3" dividing>
-            Comments
-          </Header>
+        <Comment.Group>
+          <Header as="h3">Comments</Header>
           {this.state.comments.map(comment => comment)}
           <Form onSubmit={this.handleFormSubmit}>
             <Form.TextArea
@@ -115,7 +113,7 @@ class Comments extends React.Component {
               color="violet"
               content="Add Comment"
               labelPosition="left"
-              icon="edit"
+              icon="comment"
             />
           </Form>
         </Comment.Group>
