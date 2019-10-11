@@ -17,7 +17,7 @@ class HomePage extends React.Component {
         <div style={{ width: '100%' }}>
           <Search />
         </div>
-        <div style={{ marginTop: '5rem' }}>
+        <div style={{ marginTop: '5.25rem' }}>
           <ArtifactOfTheDay />
         </div>
       </div>
