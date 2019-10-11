@@ -1,14 +1,14 @@
-import React from "react"
-import DatePicker from "react-datepicker"
+import React from 'react'
+import DatePicker from 'react-datepicker'
 
-import "react-datepicker/dist/react-datepicker.css"
+import 'react-datepicker/dist/react-datepicker.css'
 
 class Calendar extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      startDate: null
+      startDate: props.defaultValue ? props.defaultValue : new Date()
     }
   }
 
@@ -28,7 +28,7 @@ class Calendar extends React.Component {
       <DatePicker
         selected={this.state.startDate}
         onChange={this.handleChange}
-        value={this.props.defaultValue ? this.props.defaultValue : ""}
+        value={this.state.startDate}
       />
     )
   }

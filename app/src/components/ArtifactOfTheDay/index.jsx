@@ -1,7 +1,7 @@
-import React from "react"
-import withFirebase from "../../contexts/withFirebase"
-import { Card, Image, Grid, Header, Icon } from "semantic-ui-react"
-import { Link } from "react-router-dom"
+import React from 'react'
+import withFirebase from '../../contexts/withFirebase'
+import { Card, Image, Grid, Header, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 const getCurrentDate = () => {
   const date = new Date()
@@ -13,9 +13,9 @@ class ArtifactOfTheDay extends React.Component {
     super(props)
     this.state = {
       date: getCurrentDate(),
-      artifactId: "",
+      artifactId: '',
       displayImage: null,
-      createdTimeString: "",
+      createdTimeString: '',
       data: {},
       artifactExists: false,
       isLoading: true
@@ -31,9 +31,9 @@ class ArtifactOfTheDay extends React.Component {
     const day = this.state.date.getDate()
 
     let artifacts = this.props.firebase.db
-      .collection("artifacts")
-      .where("month", "==", month)
-      .where("day", "==", day)
+      .collection('artifacts')
+      .where('month', '==', month)
+      .where('day', '==', day)
       .limit(1)
 
     console.log(day)
@@ -46,7 +46,7 @@ class ArtifactOfTheDay extends React.Component {
           isLoading: false,
           displayImage: this.noArtifactFound()
         })
-        console.log("didnt find anything")
+        console.log('didnt find anything')
         return
       }
       querySnapshot.forEach(artifactDoc => {
@@ -66,7 +66,7 @@ class ArtifactOfTheDay extends React.Component {
         })
       })
     } catch (e) {
-      console.log("Error getting document:", e)
+      console.log('Error getting document:', e)
     }
   }
 
@@ -75,7 +75,7 @@ class ArtifactOfTheDay extends React.Component {
       <Grid
         centered={true}
         verticalAlign="bottom"
-        style={{ padding: "5em 2em", height: "300px", width: "300px" }}
+        style={{ padding: '5em 2em', height: '300px', width: '300px' }}
       >
         <Grid.Column>
           <Header as="h3" icon>
@@ -91,23 +91,23 @@ class ArtifactOfTheDay extends React.Component {
 
   getDisplayImageForFileType = (type, src) => {
     console.log(type)
-    if (type.includes("image")) {
+    if (type.includes('image')) {
       return (
         <Image
           bordered
           rounded
-          style={{ height: "300px", width: "300px", objectFit: "cover" }}
+          style={{ height: '300px', width: '300px', objectFit: 'cover' }}
           variant="middle"
           src={src}
         />
       )
     }
-    if (type.includes("pdf")) {
+    if (type.includes('pdf')) {
       return (
         <Grid
           centered={true}
           verticalAlign="bottom"
-          style={{ padding: "5em 2em", height: "300px", width: "300px" }}
+          style={{ padding: '5em 2em', height: '300px', width: '300px' }}
         >
           <Grid.Column>
             <Header as="h3" icon>
@@ -118,12 +118,12 @@ class ArtifactOfTheDay extends React.Component {
         </Grid>
       )
     }
-    if (type.includes("html")) {
+    if (type.includes('html')) {
       return (
         <Grid
           centered={true}
           verticalAlign="bottom"
-          style={{ padding: "5em 2em", height: "300px", width: "300px" }}
+          style={{ padding: '5em 2em', height: '300px', width: '300px' }}
         >
           <Grid.Column>
             <Header as="h3" icon>
@@ -138,7 +138,7 @@ class ArtifactOfTheDay extends React.Component {
       <Grid
         centered={true}
         verticalAlign="bottom"
-        style={{ padding: "5em 2em", height: "200px", width: "200px" }}
+        style={{ padding: '5em 2em', height: '200px', width: '200px' }}
       >
         <Grid.Column>
           <Header as="h3" icon>
@@ -150,10 +150,18 @@ class ArtifactOfTheDay extends React.Component {
     )
   }
 
+  linkWrapper = children => {
+    if (this.state.artifactId) {
+      return <Link to={`/artifact/` + this.state.artifactId}>{children()}</Link>
+    } else {
+      return <Link to={`/addartifact`}>{children()}</Link>
+    }
+  }
+
   render() {
     return (
-      <div>
-        <Link to={`/artifact/` + this.state.artifactId}>
+      <div style={{ height: '300px', width: '300px' }}>
+        {this.linkWrapper(() => (
           <Card>
             <Card.Content>
               <Card.Header>Artifact of The Day</Card.Header>
@@ -167,7 +175,7 @@ class ArtifactOfTheDay extends React.Component {
             </Card.Content>
             <Card.Content extra>Click to view more</Card.Content>
           </Card>
-        </Link>
+        ))}
       </div>
     )
   }

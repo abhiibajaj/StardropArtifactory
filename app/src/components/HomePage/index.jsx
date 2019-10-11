@@ -1,20 +1,25 @@
-import React from "react"
-import withFirebase from "../../contexts/withFirebase"
-import Search from "../Search"
-import { Link } from "react-router-dom"
-import ArtifactOfTheDay from "../ArtifactOfTheDay"
-import { Grid } from "semantic-ui-react"
+import React from 'react'
+import withFirebase from '../../contexts/withFirebase'
+import Search from '../Search'
+import ArtifactOfTheDay from '../ArtifactOfTheDay'
 class HomePage extends React.Component {
   render() {
     return (
-      <Grid>
-        <Grid.Column width={10}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '3fr 1fr',
+          gridTemplateRows: 'auto',
+          justifyItems: 'center'
+        }}
+      >
+        <div style={{ width: '100%' }}>
           <Search />
-        </Grid.Column>
-        <Grid.Column width={4} style={{ padding: "10em 2em" }}>
+        </div>
+        <div style={{ marginTop: '5.25rem' }}>
           <ArtifactOfTheDay />
-        </Grid.Column>
-      </Grid>
+        </div>
+      </div>
     )
   }
 }
