@@ -17,7 +17,6 @@ class EditForm extends React.Component {
       day: props.artifactData.day,
       month: props.artifactData.month,
       tags: props.artifactData.tags,
-      changesMade: false,
       error: "",
       redirect: false
     }
