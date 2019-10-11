@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Form } from "semantic-ui-react"
+import { Button, Form, Message } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
@@ -18,16 +18,21 @@ class EditForm extends React.Component {
       month: props.artifactData.month,
       tags: props.artifactData.tags,
       changesMade: false,
-      errors: [],
+      error: "",
       redirect: false
     }
   }
 
   handleFormSubmit = () => {
-    if (!this.state.changesMade) {
-      let errors = this.state.errors
-      errors.push(<p>"No changes have been made"</p>)
-      this.setState({ errors: errors })
+    if (
+      this.state.artifactData.title === this.state.title &&
+      this.state.artifactData.description === this.state.description &&
+      this.state.artifactData.day === this.state.day &&
+      this.state.artifactData.month === this.state.month &&
+      this.state.artifactData.tags === this.state.tags
+    ) {
+      const error = "No changes have been made!"
+      this.setState({ error: error })
       return
     }
     let artifact = this.props.firebase.db
@@ -41,14 +46,13 @@ class EditForm extends React.Component {
       month: this.state.month,
       tags: this.state.tags
     })
-    this.setState({ redirect: true })
-    this.clearErrors()
+    this.setState({ redirect: true, error: "" })
   }
 
   handleUpdate = e => {
     let value = e.target.value
     let name = e.target.name
-    this.setState({ [name]: value, changesMade: true })
+    this.setState({ [name]: value, error: "" })
     console.log(this.state)
   }
 
@@ -58,26 +62,15 @@ class EditForm extends React.Component {
       createdTime: startDate,
       day: startDate.getDate(),
       month: startDate.getMonth() + 1,
-      changesMade: true
+      error: ""
     })
   }
 
   handleUpdateTag = e => {
     this.setState({
       tags: e.target.value.split(" "),
-      changesMade: true
+      error: ""
     })
-  }
-
-  renderErrors = () => {
-    if (this.state.errors.length === 0) {
-      return
-    }
-    return this.state.errors[0]
-  }
-
-  clearErrors = () => {
-    this.setState({ errors: [] })
   }
 
   redirect = () => {
@@ -90,7 +83,7 @@ class EditForm extends React.Component {
     return (
       <div>
         {this.redirect()}
-        <Form onSubmit={this.handleFormSubmit} size="large">
+        <Form onSubmit={this.handleFormSubmit} size="large" widths="equal">
           <Form.Field>
             <label>Title</label>
             <textarea
@@ -104,7 +97,7 @@ class EditForm extends React.Component {
           <Form.Field>
             <label>Description</label>
             <textarea
-              rows="2"
+              rows="3"
               type="text"
               name="description"
               value={this.state.description}
@@ -115,12 +108,12 @@ class EditForm extends React.Component {
             <label>Date of Origin</label>
             <Calendar
               myfunc={this.handleUpdateDate}
-              defaultValue={this.state.createdTime.toDateString()}
+              defaultValue={this.state.createdTime}
               ref="editCalendar"
             />
           </Form.Field>
           <Form.Field>
-            <label>Tags</label>
+            <label>Tags (seperate with spaces)</label>
             <textarea
               rows="2"
               type="text"
@@ -129,8 +122,14 @@ class EditForm extends React.Component {
               onChange={this.handleUpdateTag}
             ></textarea>
           </Form.Field>
-          {this.renderErrors()}
-          <Button type="submit">Submit</Button>
+          {this.state.error ? (
+            <Message color="red">{this.state.error}</Message>
+          ) : (
+            ""
+          )}
+          <Button type="submit" color="violet">
+            Submit
+          </Button>
         </Form>
       </div>
     )
