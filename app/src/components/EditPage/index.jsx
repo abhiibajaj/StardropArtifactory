@@ -1,6 +1,8 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
 import EditForm from "./EditForm"
+import ArtifactSlider from "../ArtifactPage/ArtifactSlider"
+import { Segment, Grid, Header } from "semantic-ui-react"
 
 class EditPage extends React.Component {
   constructor(props) {
@@ -10,8 +12,7 @@ class EditPage extends React.Component {
       data: {},
       isLoading: true,
       artifactExists: false,
-      images: [],
-      imageIndex: 0
+      tags: []
     }
   }
   componentDidMount() {
@@ -27,16 +28,14 @@ class EditPage extends React.Component {
     try {
       const artifactDoc = await artifact.get()
       if (!artifactDoc.exists) {
-        this.setState({ isLoading: false })
+        this.setState({ isLoading: false, artifactExists: false })
         return
       }
-      this.setState({ artifactExists: true })
       console.log(artifactDoc.data())
-      // speed opt here: download image first
       this.setState({
         data: artifactDoc.data(),
-        images: artifactDoc.data().image,
-        isLoading: false
+        isLoading: false,
+        artifactExists: true
       })
     } catch (e) {
       console.log("Error getting document:", e)
@@ -45,7 +44,7 @@ class EditPage extends React.Component {
 
   buildEditForm = () => {
     return (
-      <div className="slider" style={{ display: "flex" }}>
+      <div>
         <EditForm
           artifactData={this.state.data}
           artifactId={this.state.artifactId}
@@ -57,15 +56,38 @@ class EditPage extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.state.isLoading && <div>Loading...</div>}
-        {this.state.artifactExists &&
-          !this.state.isLoading &&
-          this.buildEditForm()}
-        {!this.state.artifactExists && !this.state.isLoading && (
-          <div>The artifact does not exsit. </div>
-        )}
-      </div>
+      <Segment vertical>
+        <Grid
+          centered={true}
+          verticalAlign="bottom"
+          style={{ padding: "2em 0em" }}
+        >
+          <Grid.Row columns={1}>
+            <Grid.Column textAlign="center">
+              <Header color="violet" as="h1" style={{ fontSize: "2em" }}>
+                Editing Artifact
+              </Header>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column width={5}>
+              <ArtifactSlider
+                data={this.state.data}
+                isLoading={this.state.isLoading}
+                artifactExists={this.state.artifactExists}
+              />
+            </Grid.Column>
+
+            <Grid.Column width={4}>
+              <Grid.Column>
+                {!this.state.isLoading &&
+                  this.state.artifactExists &&
+                  this.buildEditForm()}
+              </Grid.Column>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
     )
   }
 }
