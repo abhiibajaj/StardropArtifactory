@@ -8,22 +8,13 @@ function displayFile(type, link) {
     width: '300px',
     display: 'grid',
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    objectFit: 'cover'
   }
   if (type.length > 0 && link.length > 0) {
     const t = type[0]
     if (t.startsWith('image')) {
-      return (
-        <Image
-          src={link[0]}
-          ui={true}
-          style={{
-            height: '300px',
-            width: '300px',
-            objectFit: 'cover'
-          }}
-        />
-      )
+      return <Image src={link[0]} ui={true} style={style} />
     } else if (t.includes('pdf')) {
       return <Icon name="file pdf outline" size="huge" style={style} />
     } else if (t.includes('html')) {
@@ -38,7 +29,7 @@ function displayFile(type, link) {
 
 export default function Item({ data = {} }) {
   return (
-    <Card>
+    <Card style={{ alignItems: 'center', justifyItems: 'center' }}>
       <Link to={`/artifact/${data.objectID}`}>
         <Card.Content>
           {displayFile(data.imageTypes, data.image)}
