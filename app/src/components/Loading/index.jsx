@@ -1,10 +1,10 @@
-import React from 'react'
-import './index.css'
+import React from "react"
+import styles from "./index.module.css"
 
 export default function Loading() {
   return (
-    <div className="container">
-      <div className="loading"></div>
+    <div className={styles.container}>
+      <div className={styles.loading}></div>
     </div>
   )
 }
