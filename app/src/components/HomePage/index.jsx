@@ -6,14 +6,21 @@ import { Grid } from 'semantic-ui-react'
 class HomePage extends React.Component {
   render() {
     return (
-      <Grid>
-        <Grid.Column width={10}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '3fr 1fr',
+          gridTemplateRows: 'auto',
+          justifyItems: 'center'
+        }}
+      >
+        <div style={{ width: '100%' }}>
           <Search />
-        </Grid.Column>
-        <Grid.Column width={4} style={{ padding: '10em 2em' }}>
+        </div>
+        <div style={{ marginTop: '5rem' }}>
           <ArtifactOfTheDay />
-        </Grid.Column>
-      </Grid>
+        </div>
+      </div>
     )
   }
 }

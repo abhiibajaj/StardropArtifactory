@@ -27,7 +27,7 @@ function displayFile(type, link) {
     } else if (t.includes('pdf')) {
       return <Icon name="file pdf outline" size="huge" style={style} />
     } else if (t.includes('html')) {
-      return <Icon name="file html outline" size="huge" style={style} />
+      return <Icon name="file code outline" size="huge" style={style} />
     } else {
       return <Icon name="star outline" size="huge" style={style} />
     }
