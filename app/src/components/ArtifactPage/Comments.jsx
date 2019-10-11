@@ -100,22 +100,20 @@ class Comments extends React.Component {
     return (
       <div>
         <Comment.Group>
-          <Header as="h3" dividing>
-            Comments
-          </Header>
+          <Header as="h3">Comments</Header>
           {this.state.comments.map(comment => comment)}
           <Form onSubmit={this.handleFormSubmit}>
             <Form.TextArea
               className="commentBox"
               onBlur={this.updateComment}
-              placeholder="Say something..."
+              placeholder="Write a comment..."
             />
             {this.renderErrors()}
             <Button
               color="violet"
               content="Add Comment"
               labelPosition="left"
-              icon="edit"
+              icon="comment"
             />
           </Form>
         </Comment.Group>
