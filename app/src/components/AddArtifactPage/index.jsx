@@ -1,35 +1,33 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import Button from "react-bootstrap/Button"
-import Form from "react-bootstrap/Form"
-import Col from "react-bootstrap/Col"
+import { Form, Button } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
 
-const getCurrentDate = () => {
-  const date = new Date()
-  return date
-}
+const getCurrentDate = () => new Date()
+
 class AddArtifactPage extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
       images: [],
       url: "",
       title: "",
       description: "",
-      tags: [],
-      createDate: null,
-      day: null,
+      tags: "",
+      createDate: getCurrentDate(),
+      day: getCurrentDate().getDay(),
       random: null,
-      month: null,
+      month: getCurrentDate().getMonth() + 1,
       redirect: false,
       previewImages: [],
-      user: null
+      user: null,
+      loading: false,
+      createdId: ""
     }
   }
+
   setRedirect = () => {
     this.setState({
       redirect: true
@@ -37,20 +35,20 @@ class AddArtifactPage extends React.Component {
   }
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to='/home' />
+      return <Redirect to={`/artifact/${this.state.createdId}`} />
     }
   }
 
   renderButton = () => {
     if (this.state.images.length > 0 && this.state.title.length > 0) {
       return (
-        <Button onClick={this.handleUpload} variant='primary'>
+        <Button onClick={this.handleUpload} primary>
           Upload
         </Button>
       )
     } else {
       return (
-        <Button onClick={this.handleUpload} variant='secondary' disabled>
+        <Button onClick={this.handleUpload} secondary disabled>
           Upload
         </Button>
       )
@@ -58,6 +56,7 @@ class AddArtifactPage extends React.Component {
   }
 
   handleUpload = e => {
+    this.setState({ loading: true })
     // const { image } = this.state.images;
     const firebase = this.props.firebase
     const db = firebase.db
@@ -74,16 +73,16 @@ class AddArtifactPage extends React.Component {
       )
     })
     // upload the db with array
-    Promise.all(imageUrls).then(listOfImageUrls => {
-      const imageTypes = Object.keys(this.state.images).map(key => {
-        return this.state.images[key].type
-      })
-      db.collection("artifacts")
-        .add({
+    Promise.all(imageUrls)
+      .then(listOfImageUrls => {
+        const imageTypes = Object.keys(this.state.images).map(key => {
+          return this.state.images[key].type
+        })
+        return db.collection("artifacts").add({
           date: getCurrentDate(),
           title: this.state.title,
           description: this.state.description,
-          tags: this.state.tags,
+          tags: this.state.tags.split(" "),
           createdTime: this.state.createDate,
           month: this.state.month,
           day: this.state.day,
@@ -91,14 +90,19 @@ class AddArtifactPage extends React.Component {
           imageTypes: imageTypes,
           random: Math.floor(Math.random() * Math.floor(10000))
         })
-        .then(() => {
-          // redirect on complete
+      })
+      .then(doc => {
+        // redirect to recipe on complete
+        this.setState({ createdId: doc.id }, () => {
           this.setRedirect()
         })
-    })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
   }
 
-  handleChange = e => {
+  handleFileChange = e => {
     if (e.target.files[0]) {
       const images = e.target.files
       this.setState(
@@ -125,87 +129,81 @@ class AddArtifactPage extends React.Component {
       )
     }
   }
+  handleInputChange = e => {
+    let value = e.target.value
+    let name = e.target.name
+    this.setState({ [name]: value })
+  }
 
-  handleForm = e => {
-    const title = this.refs.title.value
-    const description = this.refs.description.value
-    const createdDate = this.refs.calendar.state.startDate
-    const tags = this.refs.tags.value
-
-    this.setState({
-      title: title,
-      description: description,
-      tags: tags.split(" ")
-    })
-    if (createdDate) {
-      this.setState({
+  handleCalendar = createdDate => {
+    this.setState(
+      {
         createDate: createdDate,
         day: createdDate.getDate(),
         month: createdDate.getMonth() + 1
-      })
-    }
+      },
+      () => {
+        console.log(this.state)
+      }
+    )
   }
 
   render() {
     return (
-      <Form>
-        {this.renderRedirect()}
+      <div
+        style={{
+          margin: "1rem",
+          display: "grid",
+          width: "100%",
+          justifyItems: "center",
+          marginLeft: 0,
+          marginTop: "2rem"
+        }}
+      >
+        <Form
+          size="large"
+          loading={this.state.loading}
+          style={{ width: "80%" }}
+        >
+          {this.renderRedirect()}
+          <Form.Input
+            label="*Upload your Artifacts:"
+            type="file"
+            multiple
+            onChange={this.handleFileChange}
+          />
 
-        <Form.Row>
-          <Col sm={3}>
-            <h6>Upload your Artifacts:</h6>
-          </Col>
-          <Col>
-            <Form.Control type='file' multiple onChange={this.handleChange} />
-          </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col sm={3}>
-            <h6>Title:</h6>
-          </Col>
-          <Col>
-            <Form.Control
-              onChange={this.handleForm}
-              type='text'
-              placeholder='Title'
-              ref='title'
-            />
-          </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col sm={3}>
-            <h6>Descripton:</h6>
-          </Col>
-          <Col>
-            <Form.Control
-              onChange={this.handleForm}
-              placeholder='Description'
-              ref='description'
-              as='textarea'
-            />
-          </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col sm={3}>
-            <h6>Tags:</h6>
-          </Col>
-          <Col>
-            <Form.Control
-              onChange={this.handleForm}
-              type='text'
-              placeholder='Tags! Seperate with spaces'
-              ref='tags'
-            />
-          </Col>
-        </Form.Row>
-        <Form.Row>
-          <Col>Date of Origin</Col>
-          <Col>
-            <Calendar myfunc={this.handleForm} ref='calendar' />
-          </Col>
-        </Form.Row>
-        <Form.Group>{this.renderButton()}</Form.Group>
-      </Form>
+          <Form.Input
+            name="title"
+            onChange={this.handleInputChange}
+            type="text"
+            label="*Title:"
+            placeholder="Title"
+          />
+
+          <Form.TextArea
+            name="description"
+            label="Descripton:"
+            onChange={this.handleInputChange}
+            placeholder="Description"
+          />
+
+          <Form.Input
+            label="Tags:"
+            name="tags"
+            onChange={this.handleInputChange}
+            type="text"
+            placeholder="Tags! Separate with spaces"
+          />
+          <div>
+            <h4>
+              <b>Date of Origin:</b>
+            </h4>
+            <Calendar handleCalendar={this.handleCalendar} ref="calendar" />
+          </div>
+          <div style={{ marginTop: "1rem" }}>{this.renderButton()}</div>
+        </Form>
+      </div>
     )
   }
 }

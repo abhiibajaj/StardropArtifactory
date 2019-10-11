@@ -114,7 +114,7 @@ class EditForm extends React.Component {
           <Form.Field>
             <label>Date of Origin</label>
             <Calendar
-              myfunc={this.handleUpdateDate}
+              handleCalendar={this.handleUpdateDate}
               defaultValue={this.state.createdTime.toDateString()}
               ref="editCalendar"
             />
