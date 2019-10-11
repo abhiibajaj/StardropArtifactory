@@ -138,7 +138,7 @@ class ArtifactPage extends React.Component {
           <Grid
             centered={true}
             verticalAlign="bottom"
-            style={{ padding: "10em 2em" }}
+            style={{ padding: "10em 3em" }}
           >
             <Grid.Column>
               <Header as="h3" icon>
@@ -158,7 +158,7 @@ class ArtifactPage extends React.Component {
         <Grid
           centered={true}
           verticalAlign="bottom"
-          style={{ padding: "10em 2em" }}
+          style={{ padding: "10em 3em" }}
         >
           <Grid.Column>
             <Header as="h3" icon>
