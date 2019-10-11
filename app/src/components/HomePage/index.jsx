@@ -2,7 +2,6 @@ import React from 'react'
 import withFirebase from '../../contexts/withFirebase'
 import Search from '../Search'
 import ArtifactOfTheDay from '../ArtifactOfTheDay'
-import { Grid } from 'semantic-ui-react'
 class HomePage extends React.Component {
   render() {
     return (
