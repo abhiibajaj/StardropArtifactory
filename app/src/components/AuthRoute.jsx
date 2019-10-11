@@ -4,14 +4,14 @@ import { Route, Redirect } from 'react-router-dom'
 import Loading from './Loading'
 
 class AuthRoute extends React.Component {
-  routeRenderHandler = () => {
+  routeRenderHandler = routerProps => {
     const auth = this.props.auth
     const Component = this.props.component
     return (
       (auth.loggedIn === true)
-        ? <Component />
+        ? <Component {...routerProps} />
         : (auth.loggedIn === false)
-          ? <Redirect to='/signin' />
+          ? <Redirect to='/' />
           : <Loading />
     )
   }
