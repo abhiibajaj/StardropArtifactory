@@ -23,7 +23,6 @@ class Comments extends React.Component {
 
   fetchComments = async () => {
     const artifactId = this.state.artifactId
-    console.log("getting comments for artifact with id: " + artifactId)
     let commentsRef = this.props.firebase.db
       .collection("artifacts")
       .doc(artifactId)
@@ -35,7 +34,6 @@ class Comments extends React.Component {
       .get()
       .then(snapshot => {
         snapshot.forEach(comment => {
-          console.log(comment.id, "=>", comment.data())
           let comments = this.state.comments
           let commentContainer = (
             <CommentContainer
@@ -72,7 +70,6 @@ class Comments extends React.Component {
         text: this.state.newCommentText,
         dateCreated: new Date()
       })
-    console.log("Form submitted")
     this.fetchComments()
     this.clearErrors()
   }
