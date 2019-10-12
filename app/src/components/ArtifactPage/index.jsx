@@ -27,7 +27,6 @@ class ArtifactPage extends React.Component {
 
   fetchArtifact = async () => {
     const artifactId = this.state.artifactId
-    console.log("getting artifact with id: " + artifactId)
     let artifact = this.props.firebase.db
       .collection("artifacts")
       .doc(artifactId)
@@ -37,7 +36,6 @@ class ArtifactPage extends React.Component {
         this.setState({ artifactExists: false, isLoading: false })
         return
       }
-      console.log(artifactDoc.data())
       this.setState({
         data: artifactDoc.data(),
         artifactExists: true,

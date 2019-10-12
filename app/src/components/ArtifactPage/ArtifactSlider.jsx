@@ -57,7 +57,6 @@ class ArtifactSlider extends React.Component {
   }
 
   getDisplayImageForFileType = (type, src) => {
-    console.log(type)
     if (type.includes("image")) {
       return (
         <Image
@@ -133,8 +132,6 @@ class ArtifactSlider extends React.Component {
   }
   render() {
     let slider = this.buildSliders()
-    console.log("loading " + this.props.isLoading)
-    console.log("art " + this.props.artifactExists)
     const len = this.props.artifactExists ? this.props.data.image.length : 0
     return (
       <CarouselProvider

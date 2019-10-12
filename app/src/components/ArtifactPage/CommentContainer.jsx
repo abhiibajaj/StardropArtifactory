@@ -28,11 +28,34 @@ const formatTime = date => {
   )
 }
 
+const avatars = [
+  "https://react.semantic-ui.com/images/avatar/small/matt.jpg",
+  "https://react.semantic-ui.com/images/avatar/small/elliot.jpg",
+  "https://react.semantic-ui.com/images/avatar/small/jenny.jpg",
+  "https://react.semantic-ui.com/images/avatar/small/joe.jpg",
+  "https://react.semantic-ui.com/images/avatar/small/stevie.jpg",
+  "https://react.semantic-ui.com/images/avatar/small/steve.jpg",
+  "https://react.semantic-ui.com/images/avatar/small/christian.jpg"
+]
+
+const getAvatarForAuthor = author => {
+  let i = 0
+  let hash = 0
+  for (i = 0; i < author.length; i++) {
+    let char = author.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash = hash & hash
+  }
+  hash = Math.abs(hash)
+  const index = hash % avatars.length
+  return avatars[index]
+}
+
 const CommentContainer = props => {
   const commentTime = new Date(props.dateCreated.seconds * 1000)
   return (
     <Comment>
-      <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
+      <Comment.Avatar src={getAvatarForAuthor(props.author)} />
       <Comment.Content>
         <Comment.Author as="a">{props.author}</Comment.Author>
         <Comment.Metadata>
