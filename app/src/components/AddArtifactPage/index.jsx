@@ -148,6 +148,32 @@ class AddArtifactPage extends React.Component {
     )
   }
 
+  removeImageByIndex = i => () => {
+    console.log("HERE")
+    this.setState({
+      images: this.state.images.splice(i, 1)
+    })
+  }
+
+  previewImages = () => {
+    return (
+      <div>
+        {[...this.state.previewImages].map((image, index) => {
+          return (
+            <img
+              key={index}
+              height='250'
+              width='250'
+              alt=''
+              src={image}
+              onClick={() => this.removeImageByIndex(index)}
+            ></img>
+          )
+        })}
+      </div>
+    )
+  }
+
   render() {
     return (
       <div
@@ -160,46 +186,48 @@ class AddArtifactPage extends React.Component {
           marginTop: "2rem"
         }}
       >
+        {this.previewImages()}
+
         <Form
-          size="large"
+          size='large'
           loading={this.state.loading}
           style={{ width: "80%" }}
         >
           {this.renderRedirect()}
           <Form.Input
-            label="*Upload your Artifacts:"
-            type="file"
+            label='*Upload your Artifacts:'
+            type='file'
             multiple
             onChange={this.handleFileChange}
           />
 
           <Form.Input
-            name="title"
+            name='title'
             onChange={this.handleInputChange}
-            type="text"
-            label="*Title:"
-            placeholder="Title"
+            type='text'
+            label='*Title:'
+            placeholder='Title'
           />
 
           <Form.TextArea
-            name="description"
-            label="Descripton:"
+            name='description'
+            label='Descripton:'
             onChange={this.handleInputChange}
-            placeholder="Description"
+            placeholder='Description'
           />
 
           <Form.Input
-            label="Tags:"
-            name="tags"
+            label='Tags:'
+            name='tags'
             onChange={this.handleInputChange}
-            type="text"
-            placeholder="Tags! Separate with spaces"
+            type='text'
+            placeholder='Tags! Separate with spaces'
           />
           <div>
             <h4>
               <b>Date of Origin:</b>
             </h4>
-            <Calendar handleCalendar={this.handleCalendar} ref="calendar" />
+            <Calendar handleCalendar={this.handleCalendar} ref='calendar' />
           </div>
           <div style={{ marginTop: "1rem" }}>{this.renderButton()}</div>
         </Form>
