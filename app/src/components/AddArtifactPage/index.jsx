@@ -115,7 +115,6 @@ class AddArtifactPage extends React.Component {
           Object.keys(this.state.image).map(key => {
             let image = this.state.image[key]
             let reader = new FileReader()
-            console.log(image)
             reader.onloadend = () => {
               this.setState(state => {
                 const previewImages = state.previewImages.concat(reader.result)
@@ -158,7 +157,7 @@ class AddArtifactPage extends React.Component {
   }
 
   renderArtifactSlider = () => {
-    if (this.state.image.length > 100) {
+    if (this.state.previewImages.length > 0) {
       return (
         <ArtifactSlider
           data={this.state}

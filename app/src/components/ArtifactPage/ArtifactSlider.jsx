@@ -41,9 +41,10 @@ class ArtifactSlider extends React.Component {
         </Slider>
       )
     }
-    console.log(this.props.data)
     let slides = []
-    this.props.data.image.forEach((item, index) => {
+    this.props.data.previewImages.forEach((item, index) => {
+      console.log(item)
+      console.log(index)
       let slide = (
         <Slide index={index} key={index}>
           {this.getDisplayImageForFileType(
