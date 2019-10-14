@@ -1,6 +1,6 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import { Form, Button } from "semantic-ui-react"
+import { Form, Button, Segment } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
@@ -160,14 +160,20 @@ class AddArtifactPage extends React.Component {
       <div>
         {[...this.state.previewImages].map((image, index) => {
           return (
-            <img
-              key={index}
-              height='250'
-              width='250'
-              alt=''
-              src={image}
-              onClick={() => this.removeImageByIndex(index)}
-            ></img>
+            <div>
+              <Button.Group attached='top'>
+                <Button>Close</Button>
+              </Button.Group>
+              <Segment attached>
+                <img
+                  key={index}
+                  height='250'
+                  width='250'
+                  alt=''
+                  src={image}
+                ></img>
+              </Segment>
+            </div>
           )
         })}
       </div>
