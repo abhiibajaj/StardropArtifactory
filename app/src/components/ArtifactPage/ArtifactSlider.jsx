@@ -29,18 +29,6 @@ class ArtifactSlider extends React.Component {
         </Slider>
       )
     }
-    if (!this.props.artifactExists) {
-      return (
-        <Slider>
-          <Message icon style={{ height: 200, width: 300 }} color="red">
-            <Message.Content>
-              <Message.Header>Oh no...</Message.Header>
-              We couldn't find this artifact.
-            </Message.Content>
-          </Message>
-        </Slider>
-      )
-    }
     let slides = []
     this.props.data.image.forEach((item, index) => {
       let slide = (

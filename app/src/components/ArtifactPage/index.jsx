@@ -1,6 +1,13 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import { Segment, Grid, Divider, Header, Label } from "semantic-ui-react"
+import {
+  Segment,
+  Grid,
+  Divider,
+  Header,
+  Label,
+  Message
+} from "semantic-ui-react"
 import EditIcon from "./EditIcon"
 import Comments from "./Comments"
 import ArtifactSlider from "./ArtifactSlider"
@@ -67,7 +74,7 @@ class ArtifactPage extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.artifactExists || this.state.isLoading ? (
       <Segment vertical>
         <Grid
           centered={true}
@@ -127,6 +134,23 @@ class ArtifactPage extends React.Component {
           </Grid.Column>
         </Grid>
       </Segment>
+    ) : (
+      <div
+        style={{
+          display: "grid",
+          justifyItems: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "80vh"
+        }}
+      >
+        <Message icon style={{ height: 200, width: 300 }} color="red">
+          <Message.Content>
+            <Message.Header>Oh no...</Message.Header>
+            We couldn't find this artifact.
+          </Message.Content>
+        </Message>
+      </div>
     )
   }
 }
