@@ -32,7 +32,7 @@ class ArtifactSlider extends React.Component {
     if (!this.props.artifactExists) {
       return (
         <Slider>
-          <Message icon style={{ height: 200, width: 300 }} color="red">
+          <Message icon style={{ height: 200, width: 300 }} color='red'>
             <Message.Content>
               <Message.Header>Oh no...</Message.Header>
               We couldn't find this artifact.
@@ -41,6 +41,7 @@ class ArtifactSlider extends React.Component {
         </Slider>
       )
     }
+    console.log(this.props.data)
     let slides = []
     this.props.data.image.forEach((item, index) => {
       let slide = (
@@ -63,7 +64,7 @@ class ArtifactSlider extends React.Component {
           bordered
           rounded
           style={{ height: "500px", width: "500px", objectFit: "cover" }}
-          variant="middle"
+          variant='middle'
           src={src}
         />
       )
@@ -73,12 +74,12 @@ class ArtifactSlider extends React.Component {
         <a href={src}>
           <Grid
             centered={true}
-            verticalAlign="bottom"
+            verticalAlign='bottom'
             style={{ padding: "10em 2em" }}
           >
             <Grid.Column>
-              <Header as="h3" icon>
-                <Icon name="file pdf outline" size="huge" />
+              <Header as='h3' icon>
+                <Icon name='file pdf outline' size='huge' />
                 This artifact is a PDF document
                 <Header.Subheader>
                   Please click on the icon to download the document.
@@ -94,12 +95,12 @@ class ArtifactSlider extends React.Component {
         <a href={src}>
           <Grid
             centered={true}
-            verticalAlign="bottom"
+            verticalAlign='bottom'
             style={{ padding: "10em 3em" }}
           >
             <Grid.Column>
-              <Header as="h3" icon>
-                <Icon name="file code outline" size="huge" />
+              <Header as='h3' icon>
+                <Icon name='file code outline' size='huge' />
                 This artifact is a html file.
                 <Header.Subheader>
                   Please click on the icon to download the file.
@@ -114,12 +115,12 @@ class ArtifactSlider extends React.Component {
       <a href={src}>
         <Grid
           centered={true}
-          verticalAlign="bottom"
+          verticalAlign='bottom'
           style={{ padding: "10em 3em" }}
         >
           <Grid.Column>
-            <Header as="h3" icon>
-              <Icon name="exclamation circle" size="huge" />
+            <Header as='h3' icon>
+              <Icon name='exclamation circle' size='huge' />
               This artifact is of unknown type
               <Header.Subheader>
                 Please click on the icon to download the artifact.
@@ -141,9 +142,9 @@ class ArtifactSlider extends React.Component {
       >
         {slider}
         <Divider />
-        <Button.Group size="mini" color="violet" fluid>
+        <Button.Group size='mini' color='violet' fluid>
           {[...Array(len).keys()].map(slide => (
-            <Button circular as={Dot} key={slide} icon="circle" slide={slide} />
+            <Button circular as={Dot} key={slide} icon='circle' slide={slide} />
           ))}
         </Button.Group>
       </CarouselProvider>

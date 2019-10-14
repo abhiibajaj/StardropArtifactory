@@ -82,13 +82,13 @@ class EditForm extends React.Component {
     return (
       <div>
         {this.redirect()}
-        <Form onSubmit={this.handleFormSubmit} size="large" widths="equal">
+        <Form onSubmit={this.handleFormSubmit} size='large' widths='equal'>
           <Form.Field>
             <label>Title</label>
             <textarea
-              rows="1"
-              type="text"
-              name="title"
+              rows='1'
+              type='text'
+              name='title'
               value={this.state.title}
               onChange={this.handleUpdate}
             ></textarea>
@@ -96,9 +96,9 @@ class EditForm extends React.Component {
           <Form.Field>
             <label>Description</label>
             <textarea
-              rows="3"
-              type="text"
-              name="description"
+              rows='3'
+              type='text'
+              name='description'
               value={this.state.description}
               onChange={this.handleUpdate}
             ></textarea>
@@ -108,25 +108,25 @@ class EditForm extends React.Component {
             <Calendar
               myfunc={this.handleUpdateDate}
               defaultValue={this.state.createdTime}
-              ref="editCalendar"
+              ref='editCalendar'
             />
           </Form.Field>
           <Form.Field>
             <label>Tags (seperate with spaces)</label>
             <textarea
-              rows="2"
-              type="text"
-              name="tags"
+              rows='2'
+              type='text'
+              name='tags'
               value={this.state.tags.join(" ")}
               onChange={this.handleUpdateTag}
             ></textarea>
           </Form.Field>
           {this.state.error ? (
-            <Message color="red">{this.state.error}</Message>
+            <Message color='red'>{this.state.error}</Message>
           ) : (
             ""
           )}
-          <Button type="submit" color="violet">
+          <Button type='submit' color='violet'>
             Submit
           </Button>
         </Form>

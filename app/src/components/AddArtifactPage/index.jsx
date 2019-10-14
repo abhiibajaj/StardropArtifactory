@@ -1,8 +1,9 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import { Form, Button } from "semantic-ui-react"
+import { Form, Button, Label, Segment, Grid, Header } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import Calendar from "../Calendar"
+import ArtifactSlider from "../ArtifactPage/ArtifactSlider"
 import "react-datepicker/dist/react-datepicker.css"
 
 const getCurrentDate = () => new Date()
@@ -11,7 +12,7 @@ class AddArtifactPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      images: [],
+      image: [],
       url: "",
       title: "",
       description: "",
@@ -24,7 +25,8 @@ class AddArtifactPage extends React.Component {
       previewImages: [],
       user: null,
       loading: false,
-      createdId: ""
+      createdId: "",
+      relativeUrl: []
     }
   }
 
@@ -40,9 +42,9 @@ class AddArtifactPage extends React.Component {
   }
 
   renderButton = () => {
-    if (this.state.images.length > 0 && this.state.title.length > 0) {
+    if (this.state.image.length > 0 && this.state.title.length > 0) {
       return (
-        <Button onClick={this.handleUpload} primary>
+        <Button onClick={this.handleUpload} color='violet'>
           Upload
         </Button>
       )
@@ -62,8 +64,8 @@ class AddArtifactPage extends React.Component {
     const db = firebase.db
 
     // for each image, upload images
-    const imageUrls = Object.keys(this.state.images).map(key => {
-      let image = this.state.images[key]
+    const imageUrls = Object.keys(this.state.image).map(key => {
+      let image = this.state.image[key]
       return (
         firebase.storage
           .ref(`images/${image.name}`)
@@ -75,8 +77,8 @@ class AddArtifactPage extends React.Component {
     // upload the db with array
     Promise.all(imageUrls)
       .then(listOfImageUrls => {
-        const imageTypes = Object.keys(this.state.images).map(key => {
-          return this.state.images[key].type
+        const imageTypes = Object.keys(this.state.image).map(key => {
+          return this.state.image[key].type
         })
         return db.collection("artifacts").add({
           date: getCurrentDate(),
@@ -107,11 +109,11 @@ class AddArtifactPage extends React.Component {
       const images = e.target.files
       this.setState(
         {
-          images: images
+          image: images
         },
         () => {
-          Object.keys(this.state.images).map(key => {
-            let image = this.state.images[key]
+          Object.keys(this.state.image).map(key => {
+            let image = this.state.image[key]
             let reader = new FileReader()
             console.log(image)
             reader.onloadend = () => {
@@ -133,6 +135,7 @@ class AddArtifactPage extends React.Component {
     let value = e.target.value
     let name = e.target.name
     this.setState({ [name]: value })
+    console.log(this.state)
   }
 
   handleCalendar = createdDate => {
@@ -147,63 +150,125 @@ class AddArtifactPage extends React.Component {
       }
     )
   }
+  handleUpdateTag = e => {
+    this.setState({
+      tags: e.target.value.split(" ")
+    })
+    console.log(this.state)
+  }
+
+  renderArtifactSlider = () => {
+    if (this.state.image.length > 100) {
+      return (
+        <ArtifactSlider
+          data={this.state}
+          isLoading={this.state.isLoading}
+          artifactExists={true}
+        />
+      )
+    } else {
+      return (
+        <ArtifactSlider
+          data={this.state}
+          isLoading={true}
+          artifactExists={false}
+        />
+      )
+    }
+  }
+  renderForm = () => {
+    return (
+      <Form size='large' loading={this.state.loading} widths='equal'>
+        {this.renderRedirect()}
+        <Form.Field>
+          <label>Upload Artifact</label>
+          <Label as='label' basic htmlFor='upload'>
+            <Button
+              icon='upload'
+              label={{
+                basic: true,
+                content: "Select file(s)"
+              }}
+              rows='2'
+              labelPosition='right'
+            />
+            <input
+              hidden
+              id='upload'
+              multiple
+              type='file'
+              onChange={this.handleFileChange}
+            />
+          </Label>
+        </Form.Field>
+        <Form.Field>
+          <label>*Title</label>
+          <textarea
+            rows='2'
+            type='text'
+            name='title'
+            placeholder='Title'
+            onChange={this.handleInputChange}
+          ></textarea>
+        </Form.Field>
+
+        <Form.Field>
+          <label>Description</label>
+          <textarea
+            rows='3'
+            type='text'
+            name='description'
+            placeholder='Describe your artifact!'
+            onChange={this.handleInputChange}
+          ></textarea>
+        </Form.Field>
+
+        <Form.Field>
+          <label>Date of Origin</label>
+          <Calendar handleCalendar={this.handleCalendar} ref='calendar' />
+        </Form.Field>
+
+        <Form.Field>
+          <label>Tags (seperate with spaces)</label>
+          <textarea
+            rows='2'
+            type='text'
+            name='tags'
+            placeholder='Put your tags here!'
+            onChange={this.handleUpdateTag}
+          ></textarea>
+        </Form.Field>
+        <div style={{ marginTop: "1rem" }}>{this.renderButton()}</div>
+      </Form>
+    )
+  }
 
   render() {
     return (
-      <div
-        style={{
-          margin: "1rem",
-          display: "grid",
-          width: "100%",
-          justifyItems: "center",
-          marginLeft: 0,
-          marginTop: "2rem"
-        }}
-      >
-        <Form
-          size="large"
-          loading={this.state.loading}
-          style={{ width: "80%" }}
+      <Segment vertical>
+        <Grid
+          centered={true}
+          verticalAlign='bottom'
+          style={{ padding: "2em 0em" }}
         >
-          {this.renderRedirect()}
-          <Form.Input
-            label="*Upload your Artifacts:"
-            type="file"
-            multiple
-            onChange={this.handleFileChange}
-          />
+          <Grid.Row columns={1}>
+            <Grid.Column textAlign='center'>
+              <Header color='violet' as='h1' style={{ fontSize: "2em" }}>
+                Adding Artifact
+              </Header>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column width={5}>{this.renderArtifactSlider()}</Grid.Column>
 
-          <Form.Input
-            name="title"
-            onChange={this.handleInputChange}
-            type="text"
-            label="*Title:"
-            placeholder="Title"
-          />
-
-          <Form.TextArea
-            name="description"
-            label="Descripton:"
-            onChange={this.handleInputChange}
-            placeholder="Description"
-          />
-
-          <Form.Input
-            label="Tags:"
-            name="tags"
-            onChange={this.handleInputChange}
-            type="text"
-            placeholder="Tags! Separate with spaces"
-          />
-          <div>
-            <h4>
-              <b>Date of Origin:</b>
-            </h4>
-            <Calendar handleCalendar={this.handleCalendar} ref="calendar" />
-          </div>
-          <div style={{ marginTop: "1rem" }}>{this.renderButton()}</div>
-        </Form>
-      </div>
+            <Grid.Column width={4}>
+              <Grid.Column>
+                {!this.state.isLoading && this.renderForm()}
+              </Grid.Column>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
     )
   }
 }
