@@ -149,10 +149,16 @@ class AddArtifactPage extends React.Component {
   }
 
   removeImageByIndex = i => () => {
-    console.log("HERE")
+    console.log(i)
+    let newImages = this.state.images
+    delete newImages[0]
+    console.log(newImages)
+
     this.setState({
-      images: this.state.images.splice(i, 1)
+      images: newImages,
+      previewImages: this.state.previewImages.splice(i, 1)
     })
+    console.log(this.state)
   }
 
   previewImages = () => {
@@ -162,7 +168,7 @@ class AddArtifactPage extends React.Component {
           return (
             <div>
               <Button.Group attached='top'>
-                <Button>Close</Button>
+                <Button onClick={this.removeImageByIndex(index)}>Close</Button>
               </Button.Group>
               <Segment attached>
                 <img
