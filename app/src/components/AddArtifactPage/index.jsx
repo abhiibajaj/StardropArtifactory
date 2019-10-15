@@ -25,7 +25,7 @@ class AddArtifactPage extends React.Component {
       previewImages: [],
       user: null,
       loading: false,
-      emailAddress: "",
+      imageTypeCount: 0,
       createdId: ""
     }
   }
@@ -91,7 +91,8 @@ class AddArtifactPage extends React.Component {
           image: listOfImageUrls,
           imageTypes: imageTypes,
           random: Math.floor(Math.random() * Math.floor(10000)),
-          emailAddress: this.props.auth.data.email
+          emailAddress: this.props.auth.data.email,
+          imageTypeCount: this.state.imageTypeCount
         })
       })
       .then(doc => {
@@ -115,6 +116,12 @@ class AddArtifactPage extends React.Component {
         () => {
           Object.keys(this.state.images).map(key => {
             let image = this.state.images[key]
+            if (image.type.includes("image")) {
+              console.log("WOW AN IMAGE")
+              this.setState({
+                imageTypeCount: 1
+              })
+            }
             let reader = new FileReader()
             console.log(image)
             reader.onloadend = () => {
