@@ -2,6 +2,7 @@ import React from "react"
 import withFirebase from "../../contexts/withFirebase"
 import { Form, Button } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
+import withAuth from "../../contexts/withAuth"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -18,12 +19,13 @@ class AddArtifactPage extends React.Component {
       tags: "",
       createDate: getCurrentDate(),
       day: getCurrentDate().getDay(),
-      random: null,
       month: getCurrentDate().getMonth() + 1,
+      random: null,
       redirect: false,
       previewImages: [],
       user: null,
       loading: false,
+      emailAddress: "",
       createdId: ""
     }
   }
@@ -88,7 +90,8 @@ class AddArtifactPage extends React.Component {
           day: this.state.day,
           image: listOfImageUrls,
           imageTypes: imageTypes,
-          random: Math.floor(Math.random() * Math.floor(10000))
+          random: Math.floor(Math.random() * Math.floor(10000)),
+          emailAddress: this.props.auth.data.email
         })
       })
       .then(doc => {
@@ -161,45 +164,45 @@ class AddArtifactPage extends React.Component {
         }}
       >
         <Form
-          size="large"
+          size='large'
           loading={this.state.loading}
           style={{ width: "80%" }}
         >
           {this.renderRedirect()}
           <Form.Input
-            label="*Upload your Artifacts:"
-            type="file"
+            label='*Upload your Artifacts:'
+            type='file'
             multiple
             onChange={this.handleFileChange}
           />
 
           <Form.Input
-            name="title"
+            name='title'
             onChange={this.handleInputChange}
-            type="text"
-            label="*Title:"
-            placeholder="Title"
+            type='text'
+            label='*Title:'
+            placeholder='Title'
           />
 
           <Form.TextArea
-            name="description"
-            label="Descripton:"
+            name='description'
+            label='Descripton:'
             onChange={this.handleInputChange}
-            placeholder="Description"
+            placeholder='Description'
           />
 
           <Form.Input
-            label="Tags:"
-            name="tags"
+            label='Tags:'
+            name='tags'
             onChange={this.handleInputChange}
-            type="text"
-            placeholder="Tags! Separate with spaces"
+            type='text'
+            placeholder='Tags! Separate with spaces'
           />
           <div>
             <h4>
               <b>Date of Origin:</b>
             </h4>
-            <Calendar handleCalendar={this.handleCalendar} ref="calendar" />
+            <Calendar handleCalendar={this.handleCalendar} ref='calendar' />
           </div>
           <div style={{ marginTop: "1rem" }}>{this.renderButton()}</div>
         </Form>
@@ -208,4 +211,4 @@ class AddArtifactPage extends React.Component {
   }
 }
 
-export default withFirebase(AddArtifactPage)
+export default withAuth(withFirebase(AddArtifactPage))
