@@ -106,14 +106,18 @@ class AddArtifactPage extends React.Component {
       })
   }
 
+  getAllImages = newImages => {}
+
   handleFileChange = e => {
     if (e.target.files[0]) {
-      const images = e.target.files
+      const newImages = Object.values(e.target.files)
+
       this.setState(
-        {
-          images: images
-        },
+        prevState => ({
+          images: prevState.images.concat(newImages)
+        }),
         () => {
+          console.log(this.state)
           Object.keys(this.state.images).map(key => {
             let image = this.state.images[key]
             if (image.type.includes("image")) {

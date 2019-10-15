@@ -47,7 +47,7 @@ class SlideshowPage extends React.Component {
     const allImageUrls = []
     for (var i = 0; i < 5; i++) {
       let randomNum = Math.floor(Math.random() * Math.floor(10000))
-
+      console.log(randomNum)
       try {
         const querySnapshot = await artifacts
           .where("imageTypeCount", "==", 1)
