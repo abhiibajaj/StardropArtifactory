@@ -162,28 +162,36 @@ class AddArtifactPage extends React.Component {
   }
 
   previewImages = () => {
-    return (
-      <div>
-        {[...this.state.previewImages].map((image, index) => {
-          return (
-            <div>
-              <Button.Group attached='top'>
-                <Button onClick={this.removeImageByIndex(index)}>Close</Button>
-              </Button.Group>
-              <Segment attached>
-                <img
-                  key={index}
-                  height='250'
-                  width='250'
-                  alt=''
-                  src={image}
-                ></img>
-              </Segment>
-            </div>
-          )
-        })}
-      </div>
-    )
+    if (this.state.previewImages.length <= 0) {
+      console.log("I NEED TO REMOVE")
+      return <div></div>
+    } else {
+      console.log("HERE")
+      return (
+        <div>
+          {[...this.state.previewImages].map((image, index) => {
+            return (
+              <div>
+                <Button.Group attached='top'>
+                  <Button onClick={this.removeImageByIndex(index)}>
+                    Close
+                  </Button>
+                </Button.Group>
+                <Segment attached>
+                  <img
+                    key={index}
+                    height='250'
+                    width='250'
+                    alt=''
+                    src={image}
+                  ></img>
+                </Segment>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
   }
 
   render() {
