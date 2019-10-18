@@ -9,8 +9,7 @@ import {
   Header,
   Image,
   Placeholder,
-  Icon,
-  Message
+  Icon
 } from "semantic-ui-react"
 
 class ArtifactSlider extends React.Component {
