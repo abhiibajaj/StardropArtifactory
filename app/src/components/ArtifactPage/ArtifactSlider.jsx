@@ -9,8 +9,7 @@ import {
   Header,
   Image,
   Placeholder,
-  Icon,
-  Message
+  Icon
 } from "semantic-ui-react"
 
 class ArtifactSlider extends React.Component {
@@ -26,18 +25,6 @@ class ArtifactSlider extends React.Component {
           <Placeholder style={{ height: 400, width: 400 }}>
             <Placeholder.Image />
           </Placeholder>
-        </Slider>
-      )
-    }
-    if (!this.props.artifactExists) {
-      return (
-        <Slider>
-          <Message icon style={{ height: 200, width: 300 }} color="red">
-            <Message.Content>
-              <Message.Header>Oh no...</Message.Header>
-              We couldn't find this artifact.
-            </Message.Content>
-          </Message>
         </Slider>
       )
     }
