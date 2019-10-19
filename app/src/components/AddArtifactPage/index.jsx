@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom"
 import withAuth from "../../contexts/withAuth"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
-
+import styles from "./index.module.css"
 const getCurrentDate = () => new Date()
 
 class AddArtifactPage extends React.Component {
@@ -161,13 +161,6 @@ class AddArtifactPage extends React.Component {
     )
   }
 
-  removeImageByIndex = i => () => {
-    this.setState({
-      images: this.state.images.filter(i, 1),
-      previewImages: this.state.previewImages.splice(i, 1)
-    })
-    console.log(this.state)
-  }
   removeImageByName = (name, index) => () => {
     this.setState({
       images: this.state.images.filter(x => x.name !== name),
@@ -182,10 +175,10 @@ class AddArtifactPage extends React.Component {
     } else {
       console.log("HERE")
       return (
-        <div>
+        <div className={styles.fileContainer}>
           {[...this.state.images].map((image, index) => {
             return (
-              <div key={image.name}>
+              <div className={styles.fileItem} key={image.name}>
                 <Button.Group attached='top'>
                   <Button onClick={this.removeImageByName(image.name)}>
                     Close
@@ -193,8 +186,7 @@ class AddArtifactPage extends React.Component {
                 </Button.Group>
                 <Segment attached>
                   <img
-                    height='250'
-                    width='250'
+                    className={styles.filePreview}
                     alt=''
                     src={this.state.previewImages[index].preview}
                   ></img>
