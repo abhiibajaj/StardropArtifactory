@@ -132,6 +132,7 @@ class AddArtifactPage extends React.Component {
   handleInputChange = e => {
     let value = e.target.value
     let name = e.target.name
+    console.log(this.state)
     this.setState({ [name]: value })
   }
 
@@ -151,7 +152,7 @@ class AddArtifactPage extends React.Component {
   removeImageByIndex = i => () => {
     console.log(i)
     let newImages = this.state.images
-    delete newImages[0]
+    delete newImages[i]
     console.log(newImages)
 
     this.setState({
@@ -171,20 +172,14 @@ class AddArtifactPage extends React.Component {
         <div>
           {[...this.state.previewImages].map((image, index) => {
             return (
-              <div>
+              <div key={index}>
                 <Button.Group attached='top'>
                   <Button onClick={this.removeImageByIndex(index)}>
                     Close
                   </Button>
                 </Button.Group>
                 <Segment attached>
-                  <img
-                    key={index}
-                    height='250'
-                    width='250'
-                    alt=''
-                    src={image}
-                  ></img>
+                  <img height='250' width='250' alt='' src={image}></img>
                 </Segment>
               </div>
             )
