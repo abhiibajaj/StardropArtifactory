@@ -1,5 +1,6 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
+import withAuth from "../../contexts/withAuth"
 import {
   Segment,
   Grid,
@@ -119,7 +120,12 @@ class ArtifactPage extends React.Component {
               <Divider />
               <Grid.Row>
                 <Grid.Column>
-                  <EditIcon artifactId={this.state.artifactId} />
+                  {this.props.auth.data.email ==
+                  this.state.data.emailAddress ? (
+                    <EditIcon artifactId={this.state.artifactId} />
+                  ) : (
+                    <div></div>
+                  )}
                 </Grid.Column>
               </Grid.Row>
             </Grid.Column>
@@ -153,4 +159,4 @@ class ArtifactPage extends React.Component {
   }
 }
 
-export default withFirebase(ArtifactPage)
+export default withAuth(withFirebase(ArtifactPage))

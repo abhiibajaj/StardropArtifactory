@@ -1,5 +1,6 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
+import withAuth from "../../contexts/withAuth"
 import EditForm from "./EditForm"
 import ArtifactSlider from "../ArtifactPage/ArtifactSlider"
 import { Segment, Grid, Header, Message } from "semantic-ui-react"
@@ -54,8 +55,8 @@ class EditPage extends React.Component {
     )
   }
 
-  render() {
-    return this.state.artifactExists || this.state.isLoading ? (
+  renderEditForm = () => {
+    return (
       <Segment vertical>
         <Grid
           centered={true}
@@ -79,34 +80,58 @@ class EditPage extends React.Component {
             </Grid.Column>
 
             <Grid.Column width={4}>
-              <Grid.Column>
-                {!this.state.isLoading &&
-                  this.state.artifactExists &&
-                  this.buildEditForm()}
-              </Grid.Column>
+              <Grid.Column>{this.buildEditForm()}</Grid.Column>
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Segment>
-    ) : (
-      <div
-        style={{
-          display: "grid",
-          justifyItems: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "80vh"
-        }}
-      >
-        <Message icon style={{ height: 200, width: 300 }} color="red">
-          <Message.Content>
-            <Message.Header>Oh no...</Message.Header>
-            We couldn't find this artifact.
-          </Message.Content>
-        </Message>
-      </div>
     )
+  }
+
+  render() {
+    if (this.state.artifactExists || this.state.isLoading) {
+      if (this.props.auth.data.email != this.state.data.emailAddress) {
+        return (
+          <div
+            style={{
+              display: "grid",
+              justifyItems: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "80vh"
+            }}
+          >
+            <Message icon style={{ height: 200, width: 300 }} color="red">
+              <Message.Content>
+                <Message.Header>Oh no...</Message.Header>
+                You do not have editing permissions to this artifact.
+              </Message.Content>
+            </Message>
+          </div>
+        )
+      }
+      return this.renderEditForm()
+    } else {
+      return (
+        <div
+          style={{
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "80vh"
+          }}
+        >
+          <Message icon style={{ height: 200, width: 300 }} color="red">
+            <Message.Content>
+              <Message.Header>Oh no...</Message.Header>
+              We couldn't find this artifact.
+            </Message.Content>
+          </Message>
+        </div>
+      )
+    }
   }
 }
 
-export default withFirebase(EditPage)
+export default withAuth(withFirebase(EditPage))
