@@ -130,7 +130,10 @@ class AddArtifactPage extends React.Component {
             console.log(image)
             reader.onloadend = () => {
               this.setState(state => {
-                const previewImages = state.previewImages.concat(reader.result)
+                const previewImages = state.previewImages.concat({
+                  name: image.name,
+                  preview: reader.result
+                })
                 return {
                   previewImages
                 }
@@ -164,16 +167,17 @@ class AddArtifactPage extends React.Component {
   }
 
   removeImageByIndex = i => () => {
-    console.log(i)
-    let newImages = this.state.images
-    delete newImages[i]
-    console.log(newImages)
-
     this.setState({
-      images: newImages,
+      images: this.state.images.filter(i, 1),
       previewImages: this.state.previewImages.splice(i, 1)
     })
     console.log(this.state)
+  }
+  removeImageByName = (name, index) => () => {
+    this.setState({
+      images: this.state.images.filter(x => x.name !== name),
+      previewImages: this.state.previewImages.filter(x => x.name !== name)
+    })
   }
 
   previewImages = () => {
@@ -184,16 +188,21 @@ class AddArtifactPage extends React.Component {
       console.log("HERE")
       return (
         <div>
-          {[...this.state.previewImages].map((image, index) => {
+          {[...this.state.images].map((image, index) => {
             return (
-              <div key={index}>
+              <div key={image.name}>
                 <Button.Group attached='top'>
-                  <Button onClick={this.removeImageByIndex(index)}>
+                  <Button onClick={this.removeImageByName(image.name)}>
                     Close
                   </Button>
                 </Button.Group>
                 <Segment attached>
-                  <img height='250' width='250' alt='' src={image}></img>
+                  <img
+                    height='250'
+                    width='250'
+                    alt=''
+                    src={this.state.previewImages[index].preview}
+                  ></img>
                 </Segment>
               </div>
             )
