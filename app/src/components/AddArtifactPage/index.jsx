@@ -130,45 +130,6 @@ class AddArtifactPage extends React.Component {
       })
     })
   }
-  handleFileChange = e => {
-    if (e.target.files[0]) {
-      const newImages = Object.values(e.target.files)
-
-      this.setState(
-        prevState => ({
-          images: prevState.images.concat(newImages)
-        }),
-        () => {
-          console.log(this.state)
-          Object.keys(this.state.images).map(key => {
-            let image = this.state.images[key]
-            if (image.type.includes("image")) {
-              console.log("WOW AN IMAGE")
-              this.setState({
-                imageTypeCount: 1
-              })
-            }
-
-            let reader = new FileReader()
-            console.log(image)
-            reader.onloadend = () => {
-              this.setState(state => {
-                const previewImages = state.previewImages.concat({
-                  name: image.name,
-                  preview: reader.result
-                })
-                return {
-                  previewImages
-                }
-              })
-            }
-            reader.readAsDataURL(image)
-            return null
-          })
-        }
-      )
-    }
-  }
 
   fileReaderPromise = file => {
     // resolves to a base64 image
