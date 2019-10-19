@@ -2,6 +2,7 @@ import React from "react"
 import withFirebase from "../../contexts/withFirebase"
 import { Form, Button, Segment } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
+import withAuth from "../../contexts/withAuth"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -18,12 +19,13 @@ class AddArtifactPage extends React.Component {
       tags: "",
       createDate: getCurrentDate(),
       day: getCurrentDate().getDay(),
-      random: null,
       month: getCurrentDate().getMonth() + 1,
+      random: null,
       redirect: false,
       previewImages: [],
       user: null,
       loading: false,
+      imageTypeCount: 0,
       createdId: ""
     }
   }
@@ -88,7 +90,9 @@ class AddArtifactPage extends React.Component {
           day: this.state.day,
           image: listOfImageUrls,
           imageTypes: imageTypes,
-          random: Math.floor(Math.random() * Math.floor(10000))
+          random: Math.floor(Math.random() * Math.floor(10000)),
+          emailAddress: this.props.auth.data.email,
+          imageTypeCount: this.state.imageTypeCount
         })
       })
       .then(doc => {
@@ -102,16 +106,26 @@ class AddArtifactPage extends React.Component {
       })
   }
 
+  getAllImages = newImages => {}
+
   handleFileChange = e => {
     if (e.target.files[0]) {
-      const images = e.target.files
+      const newImages = Object.values(e.target.files)
+
       this.setState(
-        {
-          images: images
-        },
+        prevState => ({
+          images: prevState.images.concat(newImages)
+        }),
         () => {
+          console.log(this.state)
           Object.keys(this.state.images).map(key => {
             let image = this.state.images[key]
+            if (image.type.includes("image")) {
+              console.log("WOW AN IMAGE")
+              this.setState({
+                imageTypeCount: 1
+              })
+            }
             let reader = new FileReader()
             console.log(image)
             reader.onloadend = () => {
@@ -251,4 +265,4 @@ class AddArtifactPage extends React.Component {
   }
 }
 
-export default withFirebase(AddArtifactPage)
+export default withAuth(withFirebase(AddArtifactPage))
