@@ -108,6 +108,28 @@ class AddArtifactPage extends React.Component {
 
   getAllImages = newImages => {}
 
+  handleChange = e => {
+    // convert FileList to Array
+    const targetFiles = [...e.target.files]
+
+    targetFiles.map(async (file, i) => {
+      // get the preview from the file (works for images only)
+      const preview = await this.fileReaderPromise(file)
+      // append the file to files
+
+      const images = [...this.state.images, file]
+      // append the preview to previews
+      const previewImages = [
+        ...this.state.previewImages,
+        { name: file.name, preview }
+      ]
+
+      this.setState({
+        images,
+        previewImages
+      })
+    })
+  }
   handleFileChange = e => {
     if (e.target.files[0]) {
       const newImages = Object.values(e.target.files)
@@ -126,6 +148,7 @@ class AddArtifactPage extends React.Component {
                 imageTypeCount: 1
               })
             }
+
             let reader = new FileReader()
             console.log(image)
             reader.onloadend = () => {
@@ -145,6 +168,17 @@ class AddArtifactPage extends React.Component {
         }
       )
     }
+  }
+
+  fileReaderPromise = file => {
+    // resolves to a base64 image
+    return new Promise((resolve, reject) => {
+      const r = new FileReader()
+      // once loaded, resolve
+      r.onload = e => resolve(e.target.result)
+      // start the loading
+      r.readAsDataURL(file)
+    })
   }
   handleInputChange = e => {
     let value = e.target.value
@@ -236,7 +270,7 @@ class AddArtifactPage extends React.Component {
             label='*Upload your Artifacts:'
             type='file'
             multiple
-            onChange={this.handleFileChange}
+            onChange={this.handleChange}
           />
 
           <Form.Input
