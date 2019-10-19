@@ -180,8 +180,11 @@ class AddArtifactPage extends React.Component {
             return (
               <div className={styles.fileItem} key={image.name}>
                 <Button.Group attached='top'>
-                  <Button onClick={this.removeImageByName(image.name)}>
-                    Close
+                  <Button
+                    className='ui icon button'
+                    onClick={this.removeImageByName(image.name)}
+                  >
+                    <i className='close icon'></i>
                   </Button>
                 </Button.Group>
                 <Segment attached>
