@@ -188,11 +188,11 @@ class AddArtifactPage extends React.Component {
                   </Button>
                 </Button.Group>
                 <Segment attached>
-                  <img
+                  <embed
                     className={styles.filePreview}
                     alt=''
                     src={this.state.previewImages[index].preview}
-                  ></img>
+                  ></embed>
                 </Segment>
               </div>
             )
