@@ -12,6 +12,7 @@ class SlideshowPage extends React.Component {
   }
 
   renderSlideshow = () => {
+    console.log(this.state)
     const style1 = {
       backgroundImage: `url(${this.state.allImageUrls[0]})`
     }
@@ -58,15 +59,14 @@ class SlideshowPage extends React.Component {
           querySnapshot.forEach(doc => {
             let imageIndex = 0
             let imageTypes = doc.data().imageTypes
-            console.log("HIGHRE")
-            console.log(doc.data())
 
             for (var i = 0; i < imageTypes.length; i++) {
-              if (imageTypes[i].includes("image") === "image") {
+              if (imageTypes[i].includes("image")) {
                 imageIndex = i
                 break
               }
             }
+            console.log(imageTypes[imageIndex])
             console.log(doc.data().image[imageIndex])
             allImageUrls.push(doc.data().image[imageIndex])
           })
@@ -79,14 +79,13 @@ class SlideshowPage extends React.Component {
           querySnapshot.forEach(doc => {
             let imageIndex = 0
             let imageTypes = doc.data().imageTypes
-            console.log(doc.data())
             for (var i = 0; i < imageTypes.length; i++) {
-              console.log(imageTypes[i])
               if (imageTypes[i].includes("image")) {
                 imageIndex = i
                 break
               }
             }
+            console.log(imageTypes[imageIndex])
             console.log(doc.data().image[imageIndex])
 
             allImageUrls.push(doc.data().image[imageIndex])
