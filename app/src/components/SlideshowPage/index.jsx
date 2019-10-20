@@ -58,12 +58,16 @@ class SlideshowPage extends React.Component {
           querySnapshot.forEach(doc => {
             let imageIndex = 0
             let imageTypes = doc.data().imageTypes
+            console.log("HIGHRE")
+            console.log(doc.data())
+
             for (var i = 0; i < imageTypes.length; i++) {
-              if (imageTypes[i].substring(0, 4) === "image") {
+              if (imageTypes[i].includes("image") === "image") {
                 imageIndex = i
                 break
               }
             }
+            console.log(doc.data().image[imageIndex])
             allImageUrls.push(doc.data().image[imageIndex])
           })
         } else {
@@ -75,12 +79,16 @@ class SlideshowPage extends React.Component {
           querySnapshot.forEach(doc => {
             let imageIndex = 0
             let imageTypes = doc.data().imageTypes
+            console.log(doc.data())
             for (var i = 0; i < imageTypes.length; i++) {
-              if (imageTypes[i].substring(0, 4) === "image") {
+              console.log(imageTypes[i])
+              if (imageTypes[i].includes("image")) {
                 imageIndex = i
                 break
               }
             }
+            console.log(doc.data().image[imageIndex])
+
             allImageUrls.push(doc.data().image[imageIndex])
           })
         }
