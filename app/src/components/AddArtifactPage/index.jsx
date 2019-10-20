@@ -91,7 +91,7 @@ class AddArtifactPage extends React.Component {
           day: this.state.day,
           image: listOfImageUrls,
           imageTypes: imageTypes,
-          random: Math.floor(Math.random() * Math.floor(200)),
+          random: Math.floor(Math.random() * Math.floor(1000)),
           emailAddress: this.props.auth.data.email,
           imageTypeCount: this.state.imageTypeCount
         })
