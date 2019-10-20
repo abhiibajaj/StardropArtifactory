@@ -117,8 +117,14 @@ class AddArtifactPage extends React.Component {
       // get the preview from the file (works for images only)
       const preview = await this.fileReaderPromise(file)
       // append the file to files
-
       const images = [...this.state.images, file]
+
+      if (preview.includes("image")) {
+        this.setState({
+          imageTypeCount: 1
+        })
+      }
+
       // append the preview to previews
       const previewImages = [
         ...this.state.previewImages,
