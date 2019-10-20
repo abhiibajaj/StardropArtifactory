@@ -12,7 +12,8 @@ class Calendar extends React.Component {
     }
   }
 
-  handleChange = (date = new Date()) => {
+  handleChange = date => {
+    // if it is not null
     if (date !== null) {
       this.setState({ startDate: date })
       this.props.handleCalendar(date)
@@ -25,6 +26,7 @@ class Calendar extends React.Component {
         selected={this.state.startDate}
         onChange={this.handleChange}
         value={this.state.startDate}
+        maxDate={new Date()}
       />
     )
   }
