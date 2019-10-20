@@ -12,9 +12,11 @@ class Calendar extends React.Component {
     }
   }
 
-  handleChange = date => {
-    this.setState({ startDate: date })
-    this.props.handleCalendar(date)
+  handleChange = (date = new Date()) => {
+    if (date !== null) {
+      this.setState({ startDate: date })
+      this.props.handleCalendar(date)
+    }
   }
 
   render() {
