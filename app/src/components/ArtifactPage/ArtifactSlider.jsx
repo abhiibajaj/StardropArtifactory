@@ -90,18 +90,32 @@ class ArtifactSlider extends React.Component {
     }
     if (type.includes("audio")) {
       return (
-        <audio
+        <div
           style={{
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
             height: "100%",
             width: "100%"
           }}
-          controls
         >
-          <source src={src} type="audio/ogg" />
-          <source src={src} type="audio/mpeg" />
-          <source src={src} type="audio/wav" />
-          Your browser does not allow preview of this audio!
-        </audio>
+          <Header style={{ marginTop: "8rem" }} as="h3" icon>
+            <Icon name="file audio outline" size="huge" />
+            Audio File
+          </Header>
+          <audio
+            style={{
+              height: "100%",
+              width: "90%"
+            }}
+            controls
+          >
+            <source src={src} type="audio/ogg" />
+            <source src={src} type="audio/mpeg" />
+            <source src={src} type="audio/wav" />
+            Your browser does not allow preview of this audio!
+          </audio>
+        </div>
       )
     }
     if (type.includes("html")) {

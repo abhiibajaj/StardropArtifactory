@@ -1,7 +1,7 @@
-import React from 'react'
-import withFirebase from '../../contexts/withFirebase'
-import { Card, Image, Grid, Header, Icon } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import React from "react"
+import withFirebase from "../../contexts/withFirebase"
+import { Card, Image, Grid, Header, Icon } from "semantic-ui-react"
+import { Link } from "react-router-dom"
 
 const getCurrentDate = () => {
   const date = new Date()
@@ -13,9 +13,9 @@ class ArtifactOfTheDay extends React.Component {
     super(props)
     this.state = {
       date: getCurrentDate(),
-      artifactId: '',
+      artifactId: "",
       displayImage: null,
-      createdTimeString: '',
+      createdTimeString: "",
       data: {},
       artifactExists: false,
       isLoading: true
@@ -31,9 +31,9 @@ class ArtifactOfTheDay extends React.Component {
     const day = this.state.date.getDate()
 
     let artifacts = this.props.firebase.db
-      .collection('artifacts')
-      .where('month', '==', month)
-      .where('day', '==', day)
+      .collection("artifacts")
+      .where("month", "==", month)
+      .where("day", "==", day)
       .limit(1)
 
     console.log(day)
@@ -46,7 +46,7 @@ class ArtifactOfTheDay extends React.Component {
           isLoading: false,
           displayImage: this.noArtifactFound()
         })
-        console.log('didnt find anything')
+        console.log("didnt find anything")
         return
       }
       querySnapshot.forEach(artifactDoc => {
@@ -66,87 +66,133 @@ class ArtifactOfTheDay extends React.Component {
         })
       })
     } catch (e) {
-      console.log('Error getting document:', e)
+      console.log("Error getting document:", e)
     }
   }
 
   noArtifactFound = () => {
     return (
-      <Grid
-        centered={true}
-        verticalAlign="bottom"
-        style={{ padding: '5em 2em', height: '300px', width: '300px' }}
+      <div
+        style={{
+          display: "grid",
+          justifyItems: "center",
+          alignItems: "center",
+          height: "300px",
+          width: "290px"
+        }}
       >
-        <Grid.Column>
-          <Header as="h3" icon>
-            <Icon name="image outline" size="huge" />
-            No artifact was created on this day.
-            <br />
-            Let's add some!
-          </Header>
-        </Grid.Column>
-      </Grid>
+        <Header as="h3" icon>
+          <Icon name="file code outline" size="huge" />
+          No artifact was created on this day.
+          <br />
+          Let's add some!
+        </Header>
+      </div>
     )
   }
 
   getDisplayImageForFileType = (type, src) => {
-    console.log(type)
-    if (type.includes('image')) {
+    if (type.includes("image")) {
       return (
         <Image
           bordered
           rounded
-          style={{ height: '300px', width: '300px', objectFit: 'cover' }}
+          style={{ height: "300px", width: "300px", objectFit: "cover" }}
           variant="middle"
           src={src}
         />
       )
     }
-    if (type.includes('pdf')) {
+    if (type.includes("pdf")) {
       return (
-        <Grid
-          centered={true}
-          verticalAlign="bottom"
-          style={{ padding: '5em 2em', height: '300px', width: '300px' }}
-        >
-          <Grid.Column>
-            <Header as="h3" icon>
-              <Icon name="file pdf outline" size="huge" />
-              This artifact is a PDF document
-            </Header>
-          </Grid.Column>
-        </Grid>
+        <embed
+          src={src}
+          style={{
+            height: "300px",
+            width: "300px"
+          }}
+        ></embed>
       )
     }
-    if (type.includes('html')) {
+    if (type.includes("html")) {
       return (
-        <Grid
-          centered={true}
-          verticalAlign="bottom"
-          style={{ padding: '5em 2em', height: '300px', width: '300px' }}
+        <div
+          style={{
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
+            height: "300px",
+            width: "300px"
+          }}
         >
-          <Grid.Column>
-            <Header as="h3" icon>
-              <Icon name="file code outline" size="huge" />
-              This artifact is a html file.
-            </Header>
-          </Grid.Column>
-        </Grid>
+          <Header as="h3" icon>
+            <Icon name="file code outline" size="huge" />
+            This artifact is a html file.
+          </Header>
+        </div>
+      )
+    }
+    if (type.includes("video")) {
+      return (
+        <video
+          style={{
+            height: "300px",
+            width: "290px"
+          }}
+          controls
+        >
+          <source src={src} type="video/mp4" />
+          <source src={src} type="video/webm" />
+          <source src={src} type="video/ogg" />
+          Your browser does not allow preview of this video!
+        </video>
+      )
+    }
+    if (type.includes("audio")) {
+      return (
+        <div
+          style={{
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
+            height: "300px",
+            width: "300px"
+          }}
+        >
+          <Header style={{ marginTop: "3rem" }} as="h3" icon>
+            <Icon name="file audio outline" size="huge" />
+            Audio File
+          </Header>
+          <audio
+            style={{
+              height: "80%",
+              width: "90%"
+            }}
+            controls
+          >
+            <source src={src} type="audio/ogg" />
+            <source src={src} type="audio/mpeg" />
+            <source src={src} type="audio/wav" />
+            Your browser does not allow preview of this audio!
+          </audio>
+        </div>
       )
     }
     return (
-      <Grid
-        centered={true}
-        verticalAlign="bottom"
-        style={{ padding: '5em 2em', height: '200px', width: '200px' }}
+      <div
+        style={{
+          display: "grid",
+          justifyItems: "center",
+          alignItems: "center",
+          height: "300px",
+          width: "300px"
+        }}
       >
-        <Grid.Column>
-          <Header as="h3" icon>
-            <Icon name="exclamation circle" size="huge" />
-            This artifact is of unknown type
-          </Header>
-        </Grid.Column>
-      </Grid>
+        <Header as="h3" icon>
+          <Icon name="exclamation circle" size="huge" />
+          This artifact is of unknown type
+        </Header>
+      </div>
     )
   }
 
@@ -160,7 +206,7 @@ class ArtifactOfTheDay extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '300px', width: '300px' }}>
+      <div style={{ height: "300px", width: "300px", marginRight: "5rem" }}>
         {this.linkWrapper(() => (
           <Card>
             <Card.Content>
@@ -171,6 +217,7 @@ class ArtifactOfTheDay extends React.Component {
             </Card.Content>
             {this.state.displayImage}
             <Card.Content>
+              <Card.Header>{this.state.data.title}</Card.Header>
               <Card.Description>{this.state.data.description}</Card.Description>
             </Card.Content>
             <Card.Content extra>Click to view more</Card.Content>
