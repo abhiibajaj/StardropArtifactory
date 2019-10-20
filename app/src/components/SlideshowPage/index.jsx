@@ -46,8 +46,7 @@ class SlideshowPage extends React.Component {
     const artifacts = db.collection("artifacts")
     const allImageUrls = []
     for (var i = 0; i < 5; i++) {
-      let randomNum = Math.floor(Math.random() * Math.floor(10000))
-      console.log(randomNum)
+      let randomNum = Math.floor(Math.random() * Math.floor(1000))
       try {
         const querySnapshot = await artifacts
           .where("imageTypeCount", "==", 1)
@@ -58,12 +57,14 @@ class SlideshowPage extends React.Component {
           querySnapshot.forEach(doc => {
             let imageIndex = 0
             let imageTypes = doc.data().imageTypes
+
             for (var i = 0; i < imageTypes.length; i++) {
-              if (imageTypes[i].substring(0, 4) === "image") {
+              if (imageTypes[i].includes("image")) {
                 imageIndex = i
                 break
               }
             }
+
             allImageUrls.push(doc.data().image[imageIndex])
           })
         } else {
@@ -76,11 +77,12 @@ class SlideshowPage extends React.Component {
             let imageIndex = 0
             let imageTypes = doc.data().imageTypes
             for (var i = 0; i < imageTypes.length; i++) {
-              if (imageTypes[i].substring(0, 4) === "image") {
+              if (imageTypes[i].includes("image")) {
                 imageIndex = i
                 break
               }
             }
+
             allImageUrls.push(doc.data().image[imageIndex])
           })
         }
