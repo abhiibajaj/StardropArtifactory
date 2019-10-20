@@ -1,11 +1,12 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import { Form, Button, Segment } from "semantic-ui-react"
+import { Form, Button, Segment, Icon, Header } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import withAuth from "../../contexts/withAuth"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
 import styles from "./index.module.css"
+
 const getCurrentDate = () => new Date()
 
 class AddArtifactPage extends React.Component {
@@ -199,8 +200,8 @@ class AddArtifactPage extends React.Component {
     let previewArtifact = this.state.previewImages[index].preview
     let type = previewArtifact.split(";")[0]
     let artifactSrc = this.state.previewImages[index].preview
-    // console.log(previewArtifact)
-    console.log(type[0])
+    console.log(previewArtifact)
+    console.log(type)
     // console.log("NEED TO PREVIEW")
     if (type.includes("image") || type.includes("pdf")) {
       console.log("IMAGE OR PDF")
@@ -226,6 +227,21 @@ class AddArtifactPage extends React.Component {
           <source src={artifactSrc} type='audio/wav' />
           Your browser does not allow preview of this audio!
         </audio>
+      )
+    } else if (type.includes("html")) {
+      console.log("HTML")
+      return (
+        <Header as='h3' icon>
+          <Icon name='file code outline' size='huge' />
+          This artifact is a html file.
+        </Header>
+      )
+    } else {
+      return (
+        <Header as='h3' icon>
+          <Icon name='exclamation circle' size='huge' />
+          This artifact is of unknown type
+        </Header>
       )
     }
   }
