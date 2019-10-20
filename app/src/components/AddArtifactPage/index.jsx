@@ -1,10 +1,11 @@
 import React from "react"
 import withFirebase from "../../contexts/withFirebase"
-import { Form, Button } from "semantic-ui-react"
+import { Form, Button, Segment, Icon, Header } from "semantic-ui-react"
 import { Redirect } from "react-router-dom"
 import withAuth from "../../contexts/withAuth"
 import Calendar from "../Calendar"
 import "react-datepicker/dist/react-datepicker.css"
+import styles from "./index.module.css"
 
 const getCurrentDate = () => new Date()
 
@@ -108,40 +109,38 @@ class AddArtifactPage extends React.Component {
 
   getAllImages = newImages => {}
 
-  handleFileChange = e => {
-    if (e.target.files[0]) {
-      const newImages = Object.values(e.target.files)
+  handleChange = e => {
+    // convert FileList to Array
+    const targetFiles = [...e.target.files]
 
-      this.setState(
-        prevState => ({
-          images: prevState.images.concat(newImages)
-        }),
-        () => {
-          console.log(this.state)
-          Object.keys(this.state.images).map(key => {
-            let image = this.state.images[key]
-            if (image.type.includes("image")) {
-              console.log("WOW AN IMAGE")
-              this.setState({
-                imageTypeCount: 1
-              })
-            }
-            let reader = new FileReader()
-            console.log(image)
-            reader.onloadend = () => {
-              this.setState(state => {
-                const previewImages = state.previewImages.concat(reader.result)
-                return {
-                  previewImages
-                }
-              })
-            }
-            reader.readAsDataURL(image)
-            return null
-          })
-        }
-      )
-    }
+    targetFiles.map(async (file, i) => {
+      // get the preview from the file (works for images only)
+      const preview = await this.fileReaderPromise(file)
+      // append the file to files
+
+      const images = [...this.state.images, file]
+      // append the preview to previews
+      const previewImages = [
+        ...this.state.previewImages,
+        { name: file.name, preview }
+      ]
+
+      this.setState({
+        images,
+        previewImages
+      })
+    })
+  }
+
+  fileReaderPromise = file => {
+    // resolves to a base64 image
+    return new Promise((resolve, reject) => {
+      const r = new FileReader()
+      // once loaded, resolve
+      r.onload = e => resolve(e.target.result)
+      // start the loading
+      r.readAsDataURL(file)
+    })
   }
   handleInputChange = e => {
     let value = e.target.value
@@ -162,6 +161,82 @@ class AddArtifactPage extends React.Component {
     )
   }
 
+  removeImageByName = (name, index) => () => {
+    this.setState({
+      images: this.state.images.filter(x => x.name !== name),
+      previewImages: this.state.previewImages.filter(x => x.name !== name)
+    })
+  }
+
+  previewImages = () => {
+    if (this.state.previewImages.length <= 0) {
+      return <div></div>
+    } else {
+      return (
+        <div className={styles.fileContainer}>
+          {[...this.state.images].map((image, index) => {
+            return (
+              <div className={styles.fileItem} key={image.name}>
+                <Button.Group attached='top'>
+                  <Button
+                    className='ui icon button'
+                    onClick={this.removeImageByName(image.name)}
+                  >
+                    <i className='close icon'></i>
+                  </Button>
+                </Button.Group>
+                <Segment attached>{this.showPreview(index)}</Segment>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+  }
+
+  showPreview = index => {
+    let previewArtifact = this.state.previewImages[index].preview
+    let type = previewArtifact.split(";")[0]
+    let artifactSrc = this.state.previewImages[index].preview
+
+    if (type.includes("image") || type.includes("pdf")) {
+      return (
+        <embed className={styles.filePreview} alt='' src={artifactSrc}></embed>
+      )
+    } else if (type.includes("video")) {
+      return (
+        <video className={styles.filePreview} controls>
+          <source src={artifactSrc} type='video/mp4' />
+          <source src={artifactSrc} type='video/webm' />
+          <source src={artifactSrc} type='video/ogg' />
+          Your browser does not allow preview of this video!
+        </video>
+      )
+    } else if (type.includes("audio")) {
+      return (
+        <audio controls>
+          <source src={artifactSrc} type='audio/ogg' />
+          <source src={artifactSrc} type='audio/mpeg' />
+          <source src={artifactSrc} type='audio/wav' />
+          Your browser does not allow preview of this audio!
+        </audio>
+      )
+    } else if (type.includes("html")) {
+      return (
+        <Header as='h3' icon>
+          <Icon name='file code outline' size='huge' />
+          This artifact is a html file.
+        </Header>
+      )
+    } else {
+      return (
+        <Header as='h3' icon>
+          <Icon name='exclamation circle' size='huge' />
+          This artifact is of unknown type
+        </Header>
+      )
+    }
+  }
   render() {
     return (
       <div
@@ -174,6 +249,8 @@ class AddArtifactPage extends React.Component {
           marginTop: "2rem"
         }}
       >
+        {this.previewImages()}
+
         <Form
           size='large'
           loading={this.state.loading}
@@ -184,7 +261,7 @@ class AddArtifactPage extends React.Component {
             label='*Upload your Artifacts:'
             type='file'
             multiple
-            onChange={this.handleFileChange}
+            onChange={this.handleChange}
           />
 
           <Form.Input
