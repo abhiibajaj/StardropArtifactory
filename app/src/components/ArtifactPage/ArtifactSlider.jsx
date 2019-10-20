@@ -21,8 +21,8 @@ class ArtifactSlider extends React.Component {
   buildSliders = () => {
     if (this.props.isLoading) {
       return (
-        <Slider>
-          <Placeholder style={{ height: 400, width: 400 }}>
+        <Slider style={{ maxWidth: "100%" }}>
+          <Placeholder style={{ maxWidth: "100%" }}>
             <Placeholder.Image />
           </Placeholder>
         </Slider>
@@ -40,7 +40,9 @@ class ArtifactSlider extends React.Component {
       )
       slides.push(slide)
     })
-    return <Slider>{slides.map(slide => slide)}</Slider>
+    return (
+      <Slider style={{ maxWidth: "100%" }}>{slides.map(slide => slide)}</Slider>
+    )
   }
 
   getDisplayImageForFileType = (type, src) => {
@@ -49,7 +51,11 @@ class ArtifactSlider extends React.Component {
         <Image
           bordered
           rounded
-          style={{ height: "500px", width: "500px", objectFit: "cover" }}
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: "contain"
+          }}
           variant="middle"
           src={src}
         />
@@ -57,63 +63,89 @@ class ArtifactSlider extends React.Component {
     }
     if (type.includes("pdf")) {
       return (
-        <a href={src}>
-          <Grid
-            centered={true}
-            verticalAlign="bottom"
-            style={{ padding: "10em 2em" }}
-          >
-            <Grid.Column>
-              <Header as="h3" icon>
-                <Icon name="file pdf outline" size="huge" />
-                This artifact is a PDF document
-                <Header.Subheader>
-                  Please click on the icon to download the document.
-                </Header.Subheader>
-              </Header>
-            </Grid.Column>
-          </Grid>
-        </a>
+        <embed
+          src={src}
+          style={{
+            height: "100%",
+            width: "100%"
+          }}
+        ></embed>
+      )
+    }
+    if (type.includes("video")) {
+      return (
+        <video
+          style={{
+            height: "100%",
+            width: "100%"
+          }}
+          controls
+        >
+          <source src={src} type="video/mp4" />
+          <source src={src} type="video/webm" />
+          <source src={src} type="video/ogg" />
+          Your browser does not allow preview of this video!
+        </video>
+      )
+    }
+    if (type.includes("audio")) {
+      return (
+        <audio
+          style={{
+            height: "100%",
+            width: "100%"
+          }}
+          controls
+        >
+          <source src={src} type="audio/ogg" />
+          <source src={src} type="audio/mpeg" />
+          <source src={src} type="audio/wav" />
+          Your browser does not allow preview of this audio!
+        </audio>
       )
     }
     if (type.includes("html")) {
       return (
         <a href={src}>
-          <Grid
-            centered={true}
-            verticalAlign="bottom"
-            style={{ padding: "10em 3em" }}
+          <div
+            style={{
+              display: "grid",
+              justifyItems: "center",
+              alignItems: "center",
+              height: "100%",
+              width: "100%"
+            }}
           >
-            <Grid.Column>
-              <Header as="h3" icon>
-                <Icon name="file code outline" size="huge" />
-                This artifact is a html file.
-                <Header.Subheader>
-                  Please click on the icon to download the file.
-                </Header.Subheader>
-              </Header>
-            </Grid.Column>
-          </Grid>
+            <Header as="h3" icon>
+              <Icon name="file code outline" size="huge" />
+              This artifact is a html file.
+              <Header.Subheader>
+                Please click on the icon to download the file.
+              </Header.Subheader>
+            </Header>
+          </div>
         </a>
       )
     }
     return (
       <a href={src}>
-        <Grid
-          centered={true}
-          verticalAlign="bottom"
-          style={{ padding: "10em 3em" }}
+        <div
+          style={{
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%"
+          }}
         >
-          <Grid.Column>
-            <Header as="h3" icon>
-              <Icon name="exclamation circle" size="huge" />
-              This artifact is of unknown type
-              <Header.Subheader>
-                Please click on the icon to download the artifact.
-              </Header.Subheader>
-            </Header>
-          </Grid.Column>
-        </Grid>
+          <Header as="h3" icon>
+            <Icon name="exclamation circle" size="huge" />
+            This artifact is of unknown type
+            <Header.Subheader>
+              Please click on the icon to download the artifact.
+            </Header.Subheader>
+          </Header>
+        </div>
       </a>
     )
   }
@@ -122,9 +154,14 @@ class ArtifactSlider extends React.Component {
     const len = this.props.artifactExists ? this.props.data.image.length : 0
     return (
       <CarouselProvider
-        naturalSlideWidth={1}
-        naturalSlideHeight={1}
+        naturalSlideWidth={1.0}
+        naturalSlideHeight={1.0}
         totalSlides={len}
+        style={{
+          maxWidth: "100%",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
       >
         {slider}
         <Divider />
