@@ -47,7 +47,7 @@ class SlideshowPage extends React.Component {
     const artifacts = db.collection("artifacts")
     const allImageUrls = []
     for (var i = 0; i < 5; i++) {
-      let randomNum = Math.floor(Math.random() * Math.floor(10000))
+      let randomNum = Math.floor(Math.random() * Math.floor(200))
       console.log(randomNum)
       try {
         const querySnapshot = await artifacts
