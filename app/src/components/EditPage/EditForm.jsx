@@ -57,7 +57,7 @@ class EditForm extends React.Component {
 
   handleCalendar = createdDate => {
     this.setState({
-      createTime: createdDate,
+      createdTime: createdDate,
       day: createdDate.getDate(),
       month: createdDate.getMonth() + 1,
       error: ""
