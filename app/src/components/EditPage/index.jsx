@@ -3,7 +3,7 @@ import withFirebase from "../../contexts/withFirebase"
 import withAuth from "../../contexts/withAuth"
 import EditForm from "./EditForm"
 import ArtifactSlider from "../ArtifactPage/ArtifactSlider"
-import { Segment, Grid, Header, Message } from "semantic-ui-react"
+import { Segment, Grid, Header, Message, Loader } from "semantic-ui-react"
 
 class EditPage extends React.Component {
   constructor(props) {
@@ -89,7 +89,22 @@ class EditPage extends React.Component {
   }
 
   render() {
-    if (this.state.artifactExists || this.state.isLoading) {
+    if (this.state.isLoading) {
+      return (
+        <Segment
+          style={{
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "80vh"
+          }}
+        >
+          <Loader active inline="centered" />
+        </Segment>
+      )
+    }
+    if (this.state.artifactExists) {
       if (this.props.auth.data.email != this.state.data.emailAddress) {
         return (
           <div
