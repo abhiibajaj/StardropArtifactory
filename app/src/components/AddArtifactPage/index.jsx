@@ -214,11 +214,19 @@ class AddArtifactPage extends React.Component {
           <source src={artifactSrc} type='video/mp4' />
           <source src={artifactSrc} type='video/webm' />
           <source src={artifactSrc} type='video/ogg' />
-          Your browser does not support the video tag.
+          Your browser does not allow preview of this video!
         </video>
       )
     } else if (type.includes("audio")) {
       console.log("Audio")
+      return (
+        <audio controls>
+          <source src={artifactSrc} type='audio/ogg' />
+          <source src={artifactSrc} type='audio/mpeg' />
+          <source src={artifactSrc} type='audio/wav' />
+          Your browser does not allow preview of this audio!
+        </audio>
+      )
     }
   }
   render() {
