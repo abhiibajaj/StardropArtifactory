@@ -116,12 +116,16 @@ class EditPage extends React.Component {
               height: "80vh"
             }}
           >
-            <Message icon style={{ height: 200, width: 300 }} color="red">
-              <Message.Content>
-                <Message.Header>Oh no...</Message.Header>
-                You do not have editing permissions to this artifact.
-              </Message.Content>
-            </Message>
+            {this.state.data.emailAddress ? (
+              <Message icon style={{ height: 200, width: 300 }} color="red">
+                <Message.Content>
+                  <Message.Header>Oh no...</Message.Header>
+                  You do not have editing permissions to this artifact.
+                </Message.Content>
+              </Message>
+            ) : (
+              ""
+            )}
           </div>
         )
       }
