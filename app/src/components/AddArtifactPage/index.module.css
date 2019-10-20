@@ -1,0 +1,17 @@
+.fileContainer {
+  display: flex;
+  width: 100%;
+  overflow-x: scroll;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.fileItem {
+  word-break: break-all;
+  margin-right: 10px;
+}
+
+.filePreview {
+  height: 250px;
+  object-fit: contain;
+}

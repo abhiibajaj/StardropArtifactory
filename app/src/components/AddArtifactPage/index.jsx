@@ -170,7 +170,6 @@ class AddArtifactPage extends React.Component {
 
   previewImages = () => {
     if (this.state.previewImages.length <= 0) {
-      console.log("I NEED TO REMOVE")
       return <div></div>
     } else {
       console.log("HERE")
@@ -187,13 +186,7 @@ class AddArtifactPage extends React.Component {
                     <i className='close icon'></i>
                   </Button>
                 </Button.Group>
-                <Segment attached>
-                  <embed
-                    className={styles.filePreview}
-                    alt=''
-                    src={this.state.previewImages[index].preview}
-                  ></embed>
-                </Segment>
+                <Segment attached>{this.showPreview(index)}</Segment>
               </div>
             )
           })}
@@ -202,6 +195,32 @@ class AddArtifactPage extends React.Component {
     }
   }
 
+  showPreview = index => {
+    let previewArtifact = this.state.previewImages[index].preview
+    let type = previewArtifact.split(";")[0]
+    let artifactSrc = this.state.previewImages[index].preview
+    // console.log(previewArtifact)
+    console.log(type[0])
+    // console.log("NEED TO PREVIEW")
+    if (type.includes("image") || type.includes("pdf")) {
+      console.log("IMAGE OR PDF")
+      return (
+        <embed className={styles.filePreview} alt='' src={artifactSrc}></embed>
+      )
+    } else if (type.includes("video")) {
+      console.log("UPLOADING VIDEO")
+      return (
+        <video className={styles.filePreview} controls>
+          <source src={artifactSrc} type='video/mp4' />
+          <source src={artifactSrc} type='video/webm' />
+          <source src={artifactSrc} type='video/ogg' />
+          Your browser does not support the video tag.
+        </video>
+      )
+    } else if (type.includes("audio")) {
+      console.log("Audio")
+    }
+  }
   render() {
     return (
       <div
