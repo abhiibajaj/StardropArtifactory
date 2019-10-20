@@ -55,12 +55,11 @@ class EditForm extends React.Component {
     console.log(this.state)
   }
 
-  handleUpdateDate = startDate => {
-    console.log(startDate)
+  handleCalendar = createdDate => {
     this.setState({
-      createdTime: startDate,
-      day: startDate.getDate(),
-      month: startDate.getMonth() + 1,
+      createTime: createdDate,
+      day: createdDate.getDate(),
+      month: createdDate.getMonth() + 1,
       error: ""
     })
   }
@@ -106,7 +105,7 @@ class EditForm extends React.Component {
           <Form.Field>
             <label>Date of Origin</label>
             <Calendar
-              myfunc={this.handleUpdateDate}
+              handleCalendar={this.handleCalendar}
               defaultValue={this.state.createdTime}
               ref="editCalendar"
             />
