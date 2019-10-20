@@ -12,7 +12,6 @@ class SlideshowPage extends React.Component {
   }
 
   renderSlideshow = () => {
-    console.log(this.state)
     const style1 = {
       backgroundImage: `url(${this.state.allImageUrls[0]})`
     }
@@ -48,7 +47,6 @@ class SlideshowPage extends React.Component {
     const allImageUrls = []
     for (var i = 0; i < 5; i++) {
       let randomNum = Math.floor(Math.random() * Math.floor(1000))
-      console.log(randomNum)
       try {
         const querySnapshot = await artifacts
           .where("imageTypeCount", "==", 1)
@@ -66,8 +64,7 @@ class SlideshowPage extends React.Component {
                 break
               }
             }
-            console.log(imageTypes[imageIndex])
-            console.log(doc.data().image[imageIndex])
+
             allImageUrls.push(doc.data().image[imageIndex])
           })
         } else {
@@ -85,8 +82,6 @@ class SlideshowPage extends React.Component {
                 break
               }
             }
-            console.log(imageTypes[imageIndex])
-            console.log(doc.data().image[imageIndex])
 
             allImageUrls.push(doc.data().image[imageIndex])
           })
