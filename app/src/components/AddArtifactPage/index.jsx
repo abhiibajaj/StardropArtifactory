@@ -145,7 +145,6 @@ class AddArtifactPage extends React.Component {
   handleInputChange = e => {
     let value = e.target.value
     let name = e.target.name
-    console.log(this.state)
     this.setState({ [name]: value })
   }
 
@@ -173,7 +172,6 @@ class AddArtifactPage extends React.Component {
     if (this.state.previewImages.length <= 0) {
       return <div></div>
     } else {
-      console.log("HERE")
       return (
         <div className={styles.fileContainer}>
           {[...this.state.images].map((image, index) => {
@@ -200,16 +198,12 @@ class AddArtifactPage extends React.Component {
     let previewArtifact = this.state.previewImages[index].preview
     let type = previewArtifact.split(";")[0]
     let artifactSrc = this.state.previewImages[index].preview
-    console.log(previewArtifact)
-    console.log(type)
-    // console.log("NEED TO PREVIEW")
+
     if (type.includes("image") || type.includes("pdf")) {
-      console.log("IMAGE OR PDF")
       return (
         <embed className={styles.filePreview} alt='' src={artifactSrc}></embed>
       )
     } else if (type.includes("video")) {
-      console.log("UPLOADING VIDEO")
       return (
         <video className={styles.filePreview} controls>
           <source src={artifactSrc} type='video/mp4' />
@@ -219,7 +213,6 @@ class AddArtifactPage extends React.Component {
         </video>
       )
     } else if (type.includes("audio")) {
-      console.log("Audio")
       return (
         <audio controls>
           <source src={artifactSrc} type='audio/ogg' />
@@ -229,7 +222,6 @@ class AddArtifactPage extends React.Component {
         </audio>
       )
     } else if (type.includes("html")) {
-      console.log("HTML")
       return (
         <Header as='h3' icon>
           <Icon name='file code outline' size='huge' />
