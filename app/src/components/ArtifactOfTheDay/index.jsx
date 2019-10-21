@@ -206,7 +206,16 @@ class ArtifactOfTheDay extends React.Component {
 
   render() {
     return (
-      <div style={{ height: "300px", width: "300px", marginRight: "5rem" }}>
+      <div
+        style={{
+          height: "300px",
+          width: "300px",
+          marginRight: "5rem",
+          position: "fixed",
+          top: "130px",
+          right: "-40px"
+        }}
+      >
         {this.linkWrapper(() => (
           <Card>
             <Card.Content>
