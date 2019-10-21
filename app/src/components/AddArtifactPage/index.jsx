@@ -183,12 +183,12 @@ class AddArtifactPage extends React.Component {
           {[...this.state.images].map((image, index) => {
             return (
               <div className={styles.fileItem} key={image.name}>
-                <Button.Group attached='top'>
+                <Button.Group attached="top">
                   <Button
-                    className='ui icon button'
+                    className="ui icon button"
                     onClick={this.removeImageByName(image.name)}
                   >
-                    <i className='close icon'></i>
+                    <i className="close icon"></i>
                   </Button>
                 </Button.Group>
                 <Segment attached>{this.showPreview(index)}</Segment>
@@ -207,37 +207,37 @@ class AddArtifactPage extends React.Component {
 
     if (type.includes("image") || type.includes("pdf")) {
       return (
-        <embed className={styles.filePreview} alt='' src={artifactSrc}></embed>
+        <embed className={styles.filePreview} alt="" src={artifactSrc}></embed>
       )
     } else if (type.includes("video")) {
       return (
         <video className={styles.filePreview} controls>
-          <source src={artifactSrc} type='video/mp4' />
-          <source src={artifactSrc} type='video/webm' />
-          <source src={artifactSrc} type='video/ogg' />
+          <source src={artifactSrc} type="video/mp4" />
+          <source src={artifactSrc} type="video/webm" />
+          <source src={artifactSrc} type="video/ogg" />
           Your browser does not allow preview of this video!
         </video>
       )
     } else if (type.includes("audio")) {
       return (
         <audio controls>
-          <source src={artifactSrc} type='audio/ogg' />
-          <source src={artifactSrc} type='audio/mpeg' />
-          <source src={artifactSrc} type='audio/wav' />
+          <source src={artifactSrc} type="audio/ogg" />
+          <source src={artifactSrc} type="audio/mpeg" />
+          <source src={artifactSrc} type="audio/wav" />
           Your browser does not allow preview of this audio!
         </audio>
       )
     } else if (type.includes("html")) {
       return (
-        <Header as='h3' icon>
-          <Icon name='file code outline' size='huge' />
+        <Header as="h3" icon>
+          <Icon name="file code outline" size="huge" />
           This artifact is a html file.
         </Header>
       )
     } else {
       return (
-        <Header as='h3' icon>
-          <Icon name='exclamation circle' size='huge' />
+        <Header as="h3" icon>
+          <Icon name="exclamation circle" size="huge" />
           This artifact is of unknown type
         </Header>
       )
@@ -258,45 +258,45 @@ class AddArtifactPage extends React.Component {
         {this.previewImages()}
 
         <Form
-          size='large'
+          size="large"
           loading={this.state.loading}
           style={{ width: "80%" }}
         >
           {this.renderRedirect()}
           <Form.Input
-            label='*Upload your Artifacts:'
-            type='file'
+            label="*Upload your Artifacts:"
+            type="file"
             multiple
             onChange={this.handleChange}
           />
 
           <Form.Input
-            name='title'
+            name="title"
             onChange={this.handleInputChange}
-            type='text'
-            label='*Title:'
-            placeholder='Title'
+            type="text"
+            label="*Title:"
+            placeholder="Title"
           />
 
           <Form.TextArea
-            name='description'
-            label='Descripton:'
+            name="description"
+            label="Descripton:"
             onChange={this.handleInputChange}
-            placeholder='Description'
+            placeholder="Description"
           />
 
           <Form.Input
-            label='Tags:'
-            name='tags'
+            label="Tags:"
+            name="tags"
             onChange={this.handleInputChange}
-            type='text'
-            placeholder='Tags! Separate with spaces'
+            type="text"
+            placeholder="Tags! Separate with spaces"
           />
           <div>
             <h4>
               <b>Date of Origin:</b>
             </h4>
-            <Calendar handleCalendar={this.handleCalendar} ref='calendar' />
+            <Calendar handleCalendar={this.handleCalendar} ref="calendar" />
           </div>
           <div style={{ marginTop: "1rem" }}>{this.renderButton()}</div>
         </Form>
