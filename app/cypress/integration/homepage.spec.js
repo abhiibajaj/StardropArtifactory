@@ -1,33 +1,19 @@
-describe('Homepage Functions', function() {
-  before(function() {
-    cy.visit('http://localhost:3000')
-    cy.get('#sign-in-button').click()
-
-    cy.get(':nth-child(1) > .ui > input')
-        .type('testing@stardrop.com')
-        .should('have.value', 'testing@stardrop.com')
-
-    cy.get(':nth-child(2) > .ui > input')
-        .type('testing')
-        .should('have.value', 'testing')
-
-    cy.get(':nth-child(3) > .ui').click()
+describe("Home Page", function() {
+  beforeEach(function() {
+    cy.visit("http://localhost:3000")
   })
 
-  it('Loads Artefacts', function() {
-    expect(true).to.eq(true)
+  it("Loads Artifacts Correctly", function() {
+    // something loads
+    cy.get(":nth-child(1) > a > .content > .ui")
+    // redirects to view
+    cy.get(":nth-child(1) > a > .content > .ui").click()
+    cy.url().should("include", "/artifact")
   })
 
-  it('Loads Artefact of the day', function() {
-    expect(true).to.eq(true)
-  })
-
-  it('Loads Artefact of the day', function() {
-    expect(true).to.eq(true)
-  })
-
-  after(function() {
-    cy.get('.right > .ui').click()
-    cy.get('.right > .ui > .menu > .item > div').click()
+  it("Loads Searches", function() {
+    cy.get("input").type("trip")
+    cy.get(":nth-child(1) > a > .content > .ui").click()
+    cy.url().should("include", "/artifact")
   })
 })
